@@ -1,11 +1,11 @@
 body {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  min-height: 950px;
+  min-height: 1050px;
   margin: 0;
 }
 
 form {
-  max-width: 400px;
+  width: 400px;
   margin: 0 auto;
   padding-top: 100px;
 }
