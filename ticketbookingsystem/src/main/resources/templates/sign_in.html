@@ -19,22 +19,22 @@
 
   <div class="container">
 
-    <form class="login_form ">
+    <form class="login_form" method="post" th:action="@{/sign_in}">
       <div class="mb-3 rounded p-5 " >
         <h2 class="text-center  mt-3">Sign In</h2>
 
         <label for="category" class="form-label">Authorization</label>
-        <select class="form-control mb-3" id="category">
+        <select class="form-control mb-3" id="category" name="category">
           <option value="">Select Authorization type</option>
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
 
-        <label for="exampleFormControlInput1" class="form-label ">Email address</label>
-        <input type="email" class="form-control mb-3" id="exampleFormControlInput1" placeholder="name@example.com">
+        <label for="Email" class="form-label ">Email address</label>
+        <input type="email" class="form-control mb-3" id="Email" name="Email" placeholder="name@example.com">
 
-        <label for="exampleFormControlInput2" class="form-label">Password</label>
-        <input type="password" class="form-control mb-3" id="exampleFormControlInput2">
+        <label for="Password" class="form-label">Password</label>
+        <input type="password" class="form-control mb-3" id="Password" name="Password">
         
         <button type="submit" class="btn btn-primary w-100">Sign In</button>
       </div>
