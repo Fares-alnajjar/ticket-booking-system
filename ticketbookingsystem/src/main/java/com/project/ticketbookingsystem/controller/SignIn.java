@@ -16,9 +16,9 @@ public class SignIn {
     }
 
     @PostMapping()
-    public String signIn(@RequestParam("category") String category,
-                         @RequestParam("Email") String email,
-                         @RequestParam("Password") String password,
+    public String signIn(@RequestParam(value = "category", required = false) String category,
+                         @RequestParam(value = "Email", required = false) String email,
+                         @RequestParam(value = "Password", required = false) String password,
                          RedirectAttributes redirectAttributes) {
         
         if (category == null || category.isEmpty()) {

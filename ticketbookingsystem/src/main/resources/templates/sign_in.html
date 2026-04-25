@@ -22,6 +22,7 @@
     <form class="login_form" method="post" th:action="@{/sign_in}">
       <div class="mb-3 rounded p-5 " >
         <h2 class="text-center  mt-3">Sign In</h2>
+        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
         <label for="category" class="form-label">Authorization</label>
         <select class="form-control mb-3" id="category" name="category">
