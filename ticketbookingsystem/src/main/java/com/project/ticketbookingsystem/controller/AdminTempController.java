@@ -19,5 +19,5 @@ public class AdminTempController {
     public String manageEvents() { return "Admin/manage-events"; }
 
     @GetMapping("/admin/manage-users")
-    public String manageUsers() { return "Admin/manage users"; }
+    public String manageUsers() { return "Admin/manage-users"; }
 }
