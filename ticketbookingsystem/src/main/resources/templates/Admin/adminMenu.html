@@ -1,24 +1,31 @@
-<nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar" th:fragment="sidebar">
+<nav class="col-md-3 col-lg-2 d-md-block sidebar" th:fragment="sidebar(activeLink)">
   <div class="sidebar-header">
     <h3>Dashboard</h3>
   </div>
   <ul class="nav flex-column">
     <li class="nav-item">
-      <a class="nav-link active" href="/admin">
+      <a class="nav-link"  th:classappend="${activeLink == 'dashboard'} ? 'active' : ''" href="/admin">
         <i class="bi bi-house-door-fill"></i>
         <span>Dashboard</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/admin/add-event">
+      <a class="nav-link" th:classappend="${activeLink == 'add-event'} ? 'active' : ''" href="/admin/add-event">
         <i class="bi bi-calendar-plus-fill"></i>
         <span>Add event</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" th:classappend="${activeLink == 'manage-events'} ? 'active' : ''" href="#">
         <i class="bi bi-list-check"></i>
         <span>Manage events</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" th:classappend="${activeLink == 'manage-users'} ? 'active' : ''" href="#">
+        <i class="bi bi-list-check"></i>
+        <span>Manage users</span>
       </a>
     </li>
 
