@@ -1,4 +1,4 @@
 package com.project.ticketbookingsystem.repository;
 
-public class TicketRepository {
+public interface TicketRepository {
 }
