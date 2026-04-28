@@ -14,4 +14,10 @@ public class AdminTempController {
     public String addEvent() {
         return "Admin/add event";
     }
+
+    @GetMapping("/admin/manage-events")
+    public String manageEvents() { return "Admin/manage-events"; }
+
+    @GetMapping("/admin/manage-users")
+    public String manageUsers() { return "Admin/manage users"; }
 }
