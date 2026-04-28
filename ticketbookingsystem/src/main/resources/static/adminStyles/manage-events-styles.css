@@ -89,23 +89,4 @@
   transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .main-content {
-    padding: 15px;
-  }
 
-  .events-table-container {
-    padding: 10px;
-  }
-
-  .events-table-container thead th,
-  .events-table-container tbody td {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .btn-sm {
-    padding: 5px 8px;
-    font-size: 13px;
-  }
-}
