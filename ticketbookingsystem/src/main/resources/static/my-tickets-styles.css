@@ -26,10 +26,10 @@ body {
 
 }
 
-.events-divider {
+.divider {
   margin-top: 5px;
   border-bottom: 0.5px solid #e0e0e0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 #category {
@@ -48,52 +48,55 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-
-.event-card {
-  border: none;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 50px 20px;
   width: 100%;
-
 }
 
-.event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+.empty-state-icon {
+  margin-bottom: 10px;
 }
 
-.event-card .card-img-top {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-}
-
-.event-card .card-body {
-  padding: 15px;
-}
-
-.event-card .card-title {
+.empty-state-title {
   font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 6px;
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+  color: #212529;
 }
 
-.event-card .card-text {
-  font-size: 0.8rem;
+.empty-state-text {
   color: #6c757d;
-  margin-bottom: 12px;
+  font-size: 1rem;
+  margin-bottom: 15px;
 }
 
-.event-card .btn-primary {
+.btn-primary {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
   font-weight: 500;
-  font-size: 0.8rem;
-  border-radius: 8px;
-  padding: 6px 18px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.tickets-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
 
 
