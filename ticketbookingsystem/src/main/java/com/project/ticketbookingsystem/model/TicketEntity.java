@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,5 +28,7 @@ public class TicketEntity {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private EventEntity event;
+    @OneToMany(mappedBy = "ticket")
+    private List<BookingEntity> bookings;
 
 }
