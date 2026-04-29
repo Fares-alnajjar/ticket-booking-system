@@ -84,7 +84,7 @@ public class AdminTempController {
         eventService.addEvent(event);
 
         redirectAttributes.addFlashAttribute("success", "Event \"" + eventName + "\" added successfully!");
-        return "redirect:/Admin/Admin";
+        return "redirect:/Admin/add event";
     }
 
     // ── GET /admin/manage-events ──────────────────────────────────────────────
@@ -106,7 +106,7 @@ public class AdminTempController {
             return "edit-event";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Event not found.");
-            return "redirect:/admin/manage-events";
+            return "redirect:/Admin/manage-events";
         }
     }
 
@@ -128,31 +128,31 @@ public class AdminTempController {
 
         if (eventName == null || eventName.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Event name is required.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
         if (category == null || category.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Please select a category.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
         if (eventDate == null) {
             redirectAttributes.addFlashAttribute("error", "Event date is required.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
         if (eventTime == null) {
             redirectAttributes.addFlashAttribute("error", "Event time is required.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
         if (location == null || location.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Location is required.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
         if (ticketPrice == null || ticketPrice <= 0) {
             redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
         if (description == null || description.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Description is required.");
-            return "redirect:/admin/edit-event/" + id;
+            return "redirect:/Admin/edit-event/" + id;
         }
 
         EventEntity event = eventService.getEventById(id);
@@ -167,7 +167,7 @@ public class AdminTempController {
         eventService.updateEvent(event);
 
         redirectAttributes.addFlashAttribute("success", "Event \"" + eventName + "\" updated successfully!");
-        return "redirect:/admin/manage-events";
+        return "redirect:/Admin/manage-events";
     }
 
     // ── POST /admin/delete-event/{id} ─────────────────────────────────────────
@@ -182,6 +182,6 @@ public class AdminTempController {
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Event not found.");
         }
-        return "redirect:/admin/manage-events";
+        return "redirect:/Admin/manage-events";
     }
 }
