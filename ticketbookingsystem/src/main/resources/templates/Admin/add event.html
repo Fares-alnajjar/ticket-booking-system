@@ -27,35 +27,44 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="container">
-        <form class="login_form">
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <span th:text="${error}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <span th:text="${success}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form class="login_form" th:action="@{/admin/add-event}" method="post">
           <div class="mb-3  mt-3 rounded p-2">
             <h2 class="text-center mt-3">Add New Event</h2>
 
             <label for="category" class="form-label">Category</label>
-            <select class="form-select mb-3" id="category">
+            <select class="form-select mb-3" id="category" name="category">
               <option value="">Select category</option>
-              <option value="football">Football</option>
-              <option value="basketball">Basketball</option>
-              <option value="handball">Handball</option>
+              <option value="football" th:selected="${param.category == 'football'}">Football</option>
+              <option value="basketball" th:selected="${param.category == 'basketball'}">Basketball</option>
+              <option value="handball" th:selected="${param.category == 'handball'}">Handball</option>
             </select>
 
             <label for="eventName" class="form-label">Event Name</label>
-            <input type="text" class="form-control mb-3" id="eventName" placeholder="Enter event name">
+            <input type="text" class="form-control mb-3" id="eventName" name="eventName" placeholder="Enter event name" th:value="${param.eventName}">
 
             <label for="eventDate" class="form-label">Event Date</label>
-            <input type="date" class="form-control mb-3" id="eventDate">
+            <input type="date" class="form-control mb-3" id="eventDate" name="eventDate" th:value="${param.eventDate}">
 
             <label for="eventTime" class="form-label">Event Time</label>
-            <input type="time" class="form-control mb-3" id="eventTime">
+            <input type="time" class="form-control mb-3" id="eventTime" name="eventTime" th:value="${param.eventTime}">
 
-            <label for="eventLocation" class="form-label">Location</label>
-            <input type="text" class="form-control mb-3" id="eventLocation" placeholder="Enter location">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control mb-3" id="location" name="location" placeholder="Enter location" th:value="${param.location}">
 
-            <label for="eventPrice" class="form-label">Ticket Price</label>
-            <input type="number" class="form-control mb-3" id="eventPrice" placeholder="Enter price">
+            <label for="ticketPrice" class="form-label">Ticket Price</label>
+            <input type="number" class="form-control mb-3" id="ticketPrice" name="ticketPrice" placeholder="Enter price" step="0.01" th:value="${param.ticketPrice}">
 
-            <label for="eventDescription" class="form-label">Description</label>
-            <textarea class="form-control mb-3" id="eventDescription" rows="3" placeholder="Enter event description"></textarea>
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control mb-3" id="description" name="description" rows="3" placeholder="Enter event description" th:text="${param.description}"></textarea>
 
             <button type="submit" class="btn btn-primary w-100">Add Event</button>
           </div>
