@@ -153,6 +153,35 @@
               </td>
             </tr>
 
+
+            <th:block th:each="event : ${events}">
+
+              <tr>
+                <td th:text="event.id">6</td>
+                <td th:text="event.name">Basketball Game</td>
+                <td th:text="event.date">2024-06-01</td>
+                <td th:text="event.time">18:00</td>
+                <td th:text="event.venue">Basketball Court</td>
+                <td th:text="event.price">\$25.00</td>
+                <td th:text="event.capacity">0</td>
+                <td><span class="badge bg-danger">Sold Out</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary me-1">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+
+
+            </th:block>
+
+
+
+
+
           </tbody>
 
 
