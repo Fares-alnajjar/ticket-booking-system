@@ -43,11 +43,11 @@ public class EventEntity {
     @Column(nullable = false)
     private String location;
 
-    @Column(nullable = false)
-    private Double ticketPrice;
+//    @Column(nullable = false)
+//    private Double ticketPrice;
 
 
-    @OneToMany(mappedBy = "event") // "event"variable name in owner side
-    List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha
+//    @OneToMany(mappedBy = "event") // "event"variable name in owner side
+//    List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha
 
 }

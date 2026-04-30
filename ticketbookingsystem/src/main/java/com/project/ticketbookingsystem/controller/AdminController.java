@@ -69,10 +69,10 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "Location is required.");
             return "redirect:/admin/add-event";
         }
-        if (ticketPrice == null || ticketPrice <= 0) {
-            redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
-            return "redirect:/admin/add-event";
-        }
+//        if (ticketPrice == null || ticketPrice <= 0) {
+//            redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
+//            return "redirect:/admin/add-event";
+//        }
         if (description == null || description.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Description is required.");
             return "redirect:/admin/add-event";
@@ -84,7 +84,7 @@ public class AdminController {
         event.setEventDate(eventDate);
         event.setEventTime(eventTime);
         event.setLocation(location);
-        event.setTicketPrice(ticketPrice);
+//        event.setTicketPrice(ticketPrice);
         event.setDescription(description);
 
         eventService.addEvent(event);
@@ -152,10 +152,10 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "Location is required.");
             return "redirect:/admin/edit-event/" + id;
         }
-        if (ticketPrice == null || ticketPrice <= 0) {
-            redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
-            return "redirect:/admin/edit-event/" + id;
-        }
+//        if (ticketPrice == null || ticketPrice <= 0) {
+//            redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
+//            return "redirect:/admin/edit-event/" + id;
+//        }
         if (description == null || description.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Description is required.");
             return "redirect:/admin/edit-event/" + id;
@@ -167,7 +167,7 @@ public class AdminController {
         event.setEventDate(eventDate);
         event.setEventTime(eventTime);
         event.setLocation(location);
-        event.setTicketPrice(ticketPrice);
+//        event.setTicketPrice(ticketPrice);
         event.setDescription(description);
 
         eventService.updateEvent(event);
