@@ -98,7 +98,7 @@ public class AdminController {
     @GetMapping("/manage-events")
     public String getManageEventsPage(Model model) {
         model.addAttribute("events", eventService.getAllEvents());
-        return "/Admin/manage-events";
+        return "/admin/manage-events";
     }
 
     // ── GET /admin/edit-event/{id} ────────────────────────────────────────────
@@ -112,7 +112,7 @@ public class AdminController {
             return "edit-event";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Event not found.");
-            return "redirect:/Admin/manage-events";
+            return "redirect:/admin/manage-events";
         }
     }
 
