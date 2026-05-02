@@ -104,8 +104,7 @@
             <span th:text="${#temporals.format(event.eventTime, 'h:mm a')}">Time</span> •
             <span th:text="${event.location}">Location</span>
           </p>
-
-          <a th:href="@{/events/booking/{id}(id=${event.id})}" class="btn btn-primary">Book Now</a>
+          <a href="#" class="btn btn-primary">Book Now</a>
         </div>
       </div>
     </div>
