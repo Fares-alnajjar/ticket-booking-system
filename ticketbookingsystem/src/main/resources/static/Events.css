@@ -1,0 +1,99 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.head-container {
+  padding-top: 40px;
+  max-width: 1275px;
+  margin: 0 auto;
+}
+
+
+
+.head-container h1 {
+  margin-bottom: 10px;
+  font-weight: 620;
+  font-size: 1.9rem;
+
+}
+
+.events-divider {
+  margin-top: 5px;
+  border-bottom: 0.5px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+#category {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #212529;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#category:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+
+.event-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.event-card .card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.event-card .card-body {
+  padding: 15px;
+}
+
+.event-card .card-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.event-card .card-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 12px;
+}
+
+.event-card .btn-primary {
+  font-weight: 500;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  padding: 6px 18px;
+}
+
+
+

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: page_head">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NextSeat</title>
@@ -17,118 +18,48 @@
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg" style="background-color: var(--bs-primary-bg-subtle);" data-bs-theme="dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">NextSeat</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+  <nav th:replace="header :: page_navbar"></nav>
 
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
+  <h2 >Browse by Category</h2>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/events">Events</a>
-          </li>
+  <div class="container mt-3">
 
-          <li class="nav-item">
-            <a class="nav-link" href="/my-tickets">My Tickets</a>
-          </li>
-
-        </ul>
-
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/sign_up">Sign Up</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/sign_in">Sign In</a>
-          </li>
-        </ul>
-
-
-      </div>
-    </div>
-  </nav>
-
-
-
-  <div class="container mt-5">
-    <h2>Browse by Category</h2>
 
     <div class="container">
 
       <div class="category-card">
-        <img src="/home_cards/football.jpg" alt="football">
+        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1293&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="football">
         <div class="label">
           Football
         </div>
       </div>
 
       <div class="category-card">
-        <img src="/home_cards/markus-spiske-BfphcCvhl6E-unsplash.jpg" alt="basketball">
+        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1190&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="basketball">
         <div class="label">
           Basketball
         </div>
       </div>
 
       <div class="category-card">
-        <img src="/home_cards/pascal-swier-otuM-nw-_NY-unsplash.jpg" alt="handball">
+        <img src="https://images.unsplash.com/photo-1587384474964-3a06ce1ce699?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="handball">
         <div class="label">
           Handball
         </div>
       </div>
 
+
+      <div class="category-card">
+        <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Other">
+        <div class="label">
+          Others
+        </div>
+      </div>
+
+
+
     </div>
   </div>
-
-
-
-
-<!--  <div class="container mt-5">-->
-<!--  <div class="row g-4">-->
-
-<!--    <div class="col-md-4">-->
-<!--      <div class="card event-card shadow-sm">-->
-<!--        <img src="home_cards/football.jpg" class="card-img-top">-->
-<!--        <div class="card-body">-->
-<!--          <h5 class="card-title">Football Championship</h5>-->
-<!--          <p class="card-text">March 15, 2025 • 7:00 PM • Stadium Arena</p>-->
-<!--          <a href="#" class="btn btn-primary">Book Now</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="col-md-4">-->
-<!--      <div class="card event-card shadow-sm">-->
-<!--        <img src="home_cards/markus-spiske-BfphcCvhl6E-unsplash.jpg" class="card-img-top">-->
-<!--        <div class="card-body">-->
-<!--          <h5 class="card-title">Rock Concert</h5>-->
-<!--          <p class="card-text">March 20, 2025 • 8:00 PM • City Arena</p>-->
-<!--          <a href="#" class="btn btn-primary">Book Now</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="col-md-4">-->
-<!--      <div class="card event-card shadow-sm">-->
-<!--        <img src="home_cards/pascal-swier-otuM-nw-_NY-unsplash.jpg" class="card-img-top">-->
-<!--        <div class="card-body">-->
-<!--          <h5 class="card-title">Movie Premiere</h5>-->
-<!--          <p class="card-text">March 25, 2025 • 6:30 PM • Grand Theater</p>-->
-<!--          <a href="#" class="btn btn-primary">Book Now</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--  </div>-->
-<!--</div>-->
-
-
 
 
 
