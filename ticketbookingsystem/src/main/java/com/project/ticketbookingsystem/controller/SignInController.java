@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/sign_in")
-public class SignIn {
+public class SignInController {
     @GetMapping()
     public String getSignInPage() {
         return "sign_in";
