@@ -43,11 +43,30 @@ public class EventEntity {
     @Column(nullable = false)
     private String location;
 
-//    @Column(nullable = false)
-//    private Double ticketPrice;
+
+    @Column(nullable = false)
+    private Double vipPrice;
+
+    @Column(nullable = false)
+    private Double premiumPrice;
+
+    @Column(nullable = false)
+    private Double standardPrice;
 
 
-//    @OneToMany(mappedBy = "event") // "event"variable name in owner side
-//    List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha
+    @Column(nullable = false)
+    private Integer vipCapacity;
+
+    @Column(nullable = false)
+    private Integer premiumCapacity;
+
+    @Column(nullable = false)
+    private Integer standardCapacity;
+
+
+    @Column(length = 1000)
+    private String imageUrl;
+    @OneToMany(mappedBy = "event") // "event"variable name in owner side
+    List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha
 
 }
