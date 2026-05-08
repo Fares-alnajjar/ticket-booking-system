@@ -45,7 +45,7 @@ public class AdminController {
             @RequestParam(value = "eventTime",   required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime eventTime,
             @RequestParam(value = "location",    required = false) String location,
-            @RequestParam(value = "ticketPrice", required = false) Double ticketPrice,
+//            @RequestParam(value = "ticketPrice", required = false) Double ticketPrice,
             @RequestParam(value = "description", required = false) String description,
             RedirectAttributes redirectAttributes) {
 
