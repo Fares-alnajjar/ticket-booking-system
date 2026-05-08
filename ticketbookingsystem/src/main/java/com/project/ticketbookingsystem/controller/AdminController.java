@@ -55,6 +55,16 @@ public class AdminController {
 
     // ── POST /admin/add-event ─────────────────────────────────────────────────
     @PostMapping("/add-event")
+    public String addEvent(
+            @RequestParam(value = "eventName",   required = false) String eventName,
+            @RequestParam(value = "category",    required = false) String category,
+            @RequestParam(value = "eventDate",   required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate eventDate,
+            @RequestParam(value = "eventTime",   required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime eventTime,
+            @RequestParam(value = "location",    required = false) String location,
+//            @RequestParam(value = "ticketPrice", required = false) Double ticketPrice,
+            @RequestParam(value = "description", required = false) String description,
     public String addEvent(@ModelAttribute @Valid EventRequest request,
             BindingResult result,
             RedirectAttributes redirectAttributes) {
