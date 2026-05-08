@@ -1,15 +1,16 @@
 package com.project.ticketbookingsystem.controller;
 
+import com.project.ticketbookingsystem.dto.EventRequest;
 import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.service.EventService;
-import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -19,6 +20,22 @@ public class AdminController {
 
     public AdminController(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    private void mapRequestToEntity(EventRequest request, EventEntity event) {
+        event.setEventName(request.getEventName());
+        event.setCategory(EventEntity.Category.valueOf(request.getCategory().toUpperCase()));
+        event.setEventDate(request.getEventDate());
+        event.setEventTime(request.getEventTime());
+        event.setLocation(request.getLocation());
+        event.setDescription(request.getDescription());
+        event.setVipPrice(request.getVipPrice());
+        event.setPremiumPrice(request.getPremiumPrice());
+        event.setStandardPrice(request.getStandardPrice());
+        event.setVipCapacity(request.getVipCapacity());
+        event.setPremiumCapacity(request.getPremiumCapacity());
+        event.setStandardCapacity(request.getStandardCapacity());
+        event.setImageUrl(request.getImageUrl());
     }
 
     // ── GET /admin ────────────────────────────────────────────────────────────
@@ -37,59 +54,22 @@ public class AdminController {
 
     // ── POST /admin/add-event ─────────────────────────────────────────────────
     @PostMapping("/add-event")
-    public String addEvent(
-            @RequestParam(value = "eventName",   required = false) String eventName,
-            @RequestParam(value = "category",    required = false) String category,
-            @RequestParam(value = "eventDate",   required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate eventDate,
-            @RequestParam(value = "eventTime",   required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime eventTime,
-            @RequestParam(value = "location",    required = false) String location,
-            @RequestParam(value = "ticketPrice", required = false) Double ticketPrice,
-            @RequestParam(value = "description", required = false) String description,
+    public String addEvent(@ModelAttribute @Valid EventRequest request,
+            BindingResult result,
             RedirectAttributes redirectAttributes) {
 
-        if (eventName == null || eventName.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Event name is required.");
-            return "redirect:/admin/add-event";
-        }
-        if (category == null || category.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Please select a category.");
-            return "redirect:/admin/add-event";
-        }
-        if (eventDate == null) {
-            redirectAttributes.addFlashAttribute("error", "Event date is required.");
-            return "redirect:/admin/add-event";
-        }
-        if (eventTime == null) {
-            redirectAttributes.addFlashAttribute("error", "Event time is required.");
-            return "redirect:/admin/add-event";
-        }
-        if (location == null || location.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Location is required.");
-            return "redirect:/admin/add-event";
-        }
-//        if (ticketPrice == null || ticketPrice <= 0) {
-//            redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
-//            return "redirect:/admin/add-event";
-//        }
-        if (description == null || description.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Description is required.");
+        if (result.hasErrors()) {
+            String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
+            redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/admin/add-event";
         }
 
         EventEntity event = new EventEntity();
-        event.setEventName(eventName);
-        event.setCategory(EventEntity.Category.valueOf(category.toUpperCase()));
-        event.setEventDate(eventDate);
-        event.setEventTime(eventTime);
-        event.setLocation(location);
-//        event.setTicketPrice(ticketPrice);
-        event.setDescription(description);
-
+        mapRequestToEntity(request, event);
         eventService.addEvent(event);
 
-        redirectAttributes.addFlashAttribute("success", "Event \"" + eventName + "\" added successfully!");
+        redirectAttributes.addFlashAttribute("success",
+                "Event \"" + request.getEventName() + "\" added successfully!");
         return "redirect:/admin";
     }
 
@@ -119,61 +99,31 @@ public class AdminController {
     // ── POST /admin/update-event ──────────────────────────────────────────────
     // Handles the edit form submission
     @PostMapping("/update-event")
+
     public String updateEvent(
-            @RequestParam(value = "id")          Long id,
-            @RequestParam(value = "eventName",   required = false) String eventName,
-            @RequestParam(value = "category",    required = false) String category,
-            @RequestParam(value = "eventDate",   required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate eventDate,
-            @RequestParam(value = "eventTime",   required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime eventTime,
-            @RequestParam(value = "location",    required = false) String location,
-            @RequestParam(value = "ticketPrice", required = false) Double ticketPrice,
-            @RequestParam(value = "description", required = false) String description,
+            @Valid EventRequest request,
+            BindingResult result,
             RedirectAttributes redirectAttributes) {
 
-        if (eventName == null || eventName.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Event name is required.");
-            return "redirect:/admin/edit-event/" + id;
-        }
-        if (category == null || category.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Please select a category.");
-            return "redirect:/admin/edit-event/" + id;
-        }
-        if (eventDate == null) {
-            redirectAttributes.addFlashAttribute("error", "Event date is required.");
-            return "redirect:/admin/edit-event/" + id;
-        }
-        if (eventTime == null) {
-            redirectAttributes.addFlashAttribute("error", "Event time is required.");
-            return "redirect:/admin/edit-event/" + id;
-        }
-        if (location == null || location.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Location is required.");
-            return "redirect:/admin/edit-event/" + id;
-        }
-//        if (ticketPrice == null || ticketPrice <= 0) {
-//            redirectAttributes.addFlashAttribute("error", "Ticket price must be greater than 0.");
-//            return "redirect:/admin/edit-event/" + id;
-//        }
-        if (description == null || description.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Description is required.");
-            return "redirect:/admin/edit-event/" + id;
+        if (result.hasErrors()) {
+            String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/admin/edit-event/" + request.getId();
         }
 
-        EventEntity event = eventService.getEventById(id);
-        event.setEventName(eventName);
-        event.setCategory(EventEntity.Category.valueOf(category.toUpperCase()));
-        event.setEventDate(eventDate);
-        event.setEventTime(eventTime);
-        event.setLocation(location);
-//        event.setTicketPrice(ticketPrice);
-        event.setDescription(description);
+        try {
+            EventEntity event = eventService.getEventById(request.getId());
+            mapRequestToEntity(request, event);
+            eventService.updateEvent(event);
 
-        eventService.updateEvent(event);
+            redirectAttributes.addFlashAttribute("success",
+                    "Event \"" + request.getEventName() + "\" updated successfully!");
+            return "redirect:/admin/manage-events";
 
-        redirectAttributes.addFlashAttribute("success", "Event \"" + eventName + "\" updated successfully!");
-        return "redirect:/Admin/manage-events";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "Event not found.");
+            return "redirect:/admin/manage-events";
+        }
     }
 
     // ── POST /admin/delete-event/{id} ─────────────────────────────────────────
