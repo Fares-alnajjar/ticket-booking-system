@@ -64,10 +64,10 @@
             <label for="vipticketPrice" class="form-label">Vip Ticket</label>
             <div class="row">
               <div class="col">
-                <input type="number" class="form-control mb-3" id="vipticketPrice" name="vipticketPrice" placeholder="Enter vip price" step="1" th:value="${param.vipticketPrice}">
+                <input type="number" class="form-control mb-3" id="vipticketPrice" name="vipPrice" placeholder="Enter vip price" step="1" th:value="${param.vipPrice}">
               </div>
               <div class="col">
-                <input type="number" class="form-control mb-3" id="vipCapacity" name="vipCapacity" placeholder="Enter Capacity" step="1" th:value="${param.vipCapacity}">
+                <input type="number" class="form-control mb-3" id="vipCapacity" name="vipCapacity" placeholder="Enter Capacity" step="1" min="1" th:value="${param.vipCapacity ?: 1}">
               </div>
             </div>
 
@@ -75,10 +75,10 @@
             <label for="premiumTicketPrice" class="form-label">Premium Ticket</label>
             <div class="row">
               <div class="col">
-                <input type="number" class="form-control mb-3" id="premiumTicketPrice" name="premiumTicketPrice" placeholder="Enter Premium Price" step="1" th:value="${param.premiumTicketPrice}">
+                <input type="number" class="form-control mb-3" id="premiumTicketPrice" name="premiumPrice" placeholder="Enter Premium Price" step="1" th:value="${param.premiumPrice}">
               </div>
               <div class="col">
-                <input type="number" class="form-control mb-3" id="premiumCapacity" name="premiumCapacity" placeholder="Enter Capacity" step="1" th:value="${param.premiumCapacity}">
+                <input type="number" class="form-control mb-3" id="premiumCapacity" name="premiumCapacity" placeholder="Enter Capacity" step="1" min="1" th:value="${param.premiumCapacity ?: 1}">
               </div>
 
             </div>
@@ -87,18 +87,18 @@
             <label for="standardTicketPrice" class="form-label">Standard Ticket</label>
             <div class="row">
               <div class="col">
-                <input type="number" class="form-control mb-3" id="standardTicketPrice" name="standardTicketPrice" placeholder="Enter Standard Price" step="1" th:value="${param.standardTicketPrice}">
+                <input type="number" class="form-control mb-3" id="standardTicketPrice" name="standardPrice" placeholder="Enter Standard Price" step="1" th:value="${param.standardPrice}">
               </div>
               <div class="col">
-                <input type="number" class="form-control mb-3" id="StandardCapacity" name="StandardCapacity" placeholder="Enter Capacity" step="1" th:value="${param.StandardCapacity}">
+                <input type="number" class="form-control mb-3" id="standardCapacity" name="standardCapacity" placeholder="Enter Capacity" step="1" min="1" th:value="${param.standardCapacity ?: 1}">
               </div>
             </div>
 
-            <label for="ticketLimitPerUser" class="form-label">Ticket Limit Per User</label>
-            <input type="number" class="form-control mb-3" id="ticketLimitPerUser" name="ticketLimitPerUser" placeholder="Enter max tickets per user" step="1" min="1" th:value="${param.ticketLimitPerUser}">
+            <label for="ticketsPerUser" class="form-label">Ticket Limit Per User</label>
+            <input type="number" class="form-control mb-3" id="ticketsPerUser" name="ticketsPerUser" placeholder="Enter max tickets per user" step="1" min="1" th:value="${param.ticketsPerUser}">
 
             <label for="imageURL" class="form-label">Image URL</label>
-            <input type="url" class="form-control mb-3" id="imageURL" name="imageURL" placeholder="Enter image URL" th:value="${param.imageURL}">
+            <input type="url" class="form-control mb-3" id="imageURL" name="imageUrl" placeholder="Enter image URL" th:value="${param.imageUrl}">
 
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control mb-3" id="description" name="description" rows="3" placeholder="Enter event description" th:text="${param.description}"></textarea>
