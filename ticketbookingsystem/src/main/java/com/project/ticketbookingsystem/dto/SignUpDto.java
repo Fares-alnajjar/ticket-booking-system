@@ -11,11 +11,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SignUpDto {
-    private Long id;
 
     @NotBlank(message = "Name is required")
     private String name;

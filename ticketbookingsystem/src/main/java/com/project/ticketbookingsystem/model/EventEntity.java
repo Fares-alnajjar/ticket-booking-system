@@ -66,6 +66,10 @@ public class EventEntity {
 
     @Column(length = 1000)
     private String imageUrl;
+
+    @Column(nullable = false)
+    private Integer ticketsPerUser;
+
     @OneToMany(mappedBy = "event") // "event"variable name in owner side
     List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha
 
