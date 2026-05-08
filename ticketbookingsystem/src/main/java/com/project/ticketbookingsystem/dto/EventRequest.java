@@ -59,5 +59,10 @@ public class EventRequest {
     @Min(value = 1, message = "Standard capacity must be at least 1")
     private Integer standardCapacity;
 
+    @NotNull(message = "ticket per user is required")
+    @Min(value = 1, message = "ticket per user must be at least 1")
+    private Integer ticketsPerUser;
+
+
     private String imageUrl;
 }
