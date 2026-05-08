@@ -36,6 +36,7 @@ public class AdminController {
         event.setPremiumCapacity(request.getPremiumCapacity());
         event.setStandardCapacity(request.getStandardCapacity());
         event.setImageUrl(request.getImageUrl());
+        event.setTicketsPerUser(request.getTicketsPerUser());
     }
 
     // ── GET /admin ────────────────────────────────────────────────────────────
