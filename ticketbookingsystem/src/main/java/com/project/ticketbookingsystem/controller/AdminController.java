@@ -2,7 +2,9 @@ package com.project.ticketbookingsystem.controller;
 
 import com.project.ticketbookingsystem.dto.EventRequest;
 import com.project.ticketbookingsystem.model.EventEntity;
+import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.service.EventService;
+import com.project.ticketbookingsystem.service.SignUpService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController {
 
     private final EventService eventService;
+    private final SignUpService signUpService;
 
-    public AdminController(EventService eventService) {
+
+    public AdminController(EventService eventService, SignUpService signUpService) {
         this.eventService = eventService;
+        this.signUpService = signUpService;
     }
 
     private void mapRequestToEntity(EventRequest request, EventEntity event) {
@@ -43,6 +48,9 @@ public class AdminController {
     public String getAdminPage(Model model) {
         model.addAttribute("events",      eventService.getAllEvents());
         model.addAttribute("totalEvents", eventService.getTotalEvents());
+        //user part
+        model.addAttribute("users", signUpService.getAllUsers());
+        model.addAttribute("totalUsers", signUpService.getAllUsers());
         return "Admin/Admin";
     }
 
@@ -140,4 +148,25 @@ public class AdminController {
         }
         return "redirect:/admin/manage-events";
     }
+
+    //USER DASHBOARD
+    @GetMapping("/manage-users")
+    public String getManageUsersPage(Model model) {
+        model.addAttribute("users", signUpService.getAllUsers());
+        return "/admin/manage-users";
+    }
+    //DELETE USER
+    @PostMapping("/delete-user/{id}")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            UserEntity user = signUpService.getUserById(id);
+            String name = user.getName();
+            signUpService.deleteUser(id);
+            redirectAttributes.addFlashAttribute("success", "User \"" + name + "\" deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "User not found.");
+        }
+        return "redirect:/admin/manage-users";
+    }
+
 }
