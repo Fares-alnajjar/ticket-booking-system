@@ -25,7 +25,7 @@ public class SignUpController {
     @PostMapping("/sign_up")
     public String handleSignUp(
             @RequestParam("name") String name,
-            @RequestParam("phone") Long phone,
+            @RequestParam("phone") String phone,
             @RequestParam("nationalId") Long nationalId,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
