@@ -114,7 +114,7 @@ public class AdminController {
     @PostMapping("/update-event")
 
     public String updateEvent(
-            @Valid EventRequest request,
+            @ModelAttribute @Valid EventRequest request,
             BindingResult result,
             RedirectAttributes redirectAttributes) {
 
