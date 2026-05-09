@@ -27,14 +27,18 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="container">
-        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
           <span th:text="${error}"></span>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
           <span th:text="${success}"></span>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+
+        <script>
+            setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
+        </script>
 
         <form class="login_form" th:action="@{/admin/add-event}" method="post">
           <div class="mb-3  mt-3 rounded p-2">

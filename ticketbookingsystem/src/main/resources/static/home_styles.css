@@ -1,6 +1,21 @@
-body {
+﻿body {
   margin: 0;
   padding: 0;
+}
+
+.navbar {
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+}
+
+.navbar-brand {
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+}
+
+.nav-link {
+  font-size: 1rem !important;
+  font-weight: 500 !important;
 }
 
 h2 {
@@ -56,6 +71,7 @@ h2 {
   align-items: center;
   gap: 8px;
 }
+
 
 
 
@@ -193,6 +209,9 @@ h2 {
   opacity: 1;
   visibility: visible;
 }
+
+
+
 
 
 

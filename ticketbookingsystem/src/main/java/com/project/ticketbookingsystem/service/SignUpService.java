@@ -34,6 +34,7 @@ public class SignUpService {
                 .nationalId(request.getNationalId())
                 .password(request.getPassword()) // must be encoded
                 .phoneNumber(request.getPhoneNumber())
+                .role("user")
                 .build();
         return userRepository.save(usere) ;
 

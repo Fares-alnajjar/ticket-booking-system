@@ -50,8 +50,8 @@ public class AdminController {
         model.addAttribute("events",      eventService.getAllEvents());
         model.addAttribute("totalEvents", eventService.getTotalEvents());
         //user part
-        model.addAttribute("events",      signUpService.getAllUsers());
-        model.addAttribute("totalEvents", signUpService.getTotalUsers());
+        model.addAttribute("users",       signUpService.getAllUsers());
+        model.addAttribute("totalUsers",  signUpService.getTotalUsers());
         return "Admin/Admin";
     }
 
@@ -79,7 +79,7 @@ public class AdminController {
 
         redirectAttributes.addFlashAttribute("success",
                 "Event \"" + request.getEventName() + "\" added successfully!");
-        return "redirect:/admin";
+        return "redirect:/admin/add-event";
     }
 
     // ── GET /admin/manage-events ──────────────────────────────────────────────
