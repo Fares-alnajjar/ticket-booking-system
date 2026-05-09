@@ -16,15 +16,9 @@ public class SignInController {
     }
 
     @PostMapping()
-    public String signIn(@RequestParam(value = "category", required = false) String category,
-                         @RequestParam(value = "Email", required = false) String email,
+    public String signIn(@RequestParam(value = "Email", required = false) String email,
                          @RequestParam(value = "Password", required = false) String password,
                          RedirectAttributes redirectAttributes) {
-        
-        if (category == null || category.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Please select an authorization type");
-            return "redirect:/sign_in";
-        }
 
         if (email == null || email.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Please enter your email");
@@ -36,13 +30,49 @@ public class SignInController {
             return "redirect:/sign_in";
         }
 
-        if ("admin".equalsIgnoreCase(category)) {
-            return "redirect:/admin";
-        } else if ("user".equalsIgnoreCase(category)) {
-            return "redirect:/events";
-        }
-
         redirectAttributes.addFlashAttribute("error", "Invalid authorization type");
-        return "redirect:/sign_in";
+        return "redirect:/events";
     }
 }
+
+//
+//
+//@Controller
+//@RequestMapping("/sign_in")
+//public class SignInController {
+//    @GetMapping()
+//    public String getSignInPage() {
+//        return "sign_in";
+//    }
+//
+//    @PostMapping()
+//    public String signIn(@RequestParam(value = "category", required = false) String category,
+//                         @RequestParam(value = "Email", required = false) String email,
+//                         @RequestParam(value = "Password", required = false) String password,
+//                         RedirectAttributes redirectAttributes) {
+//
+//        if (category == null || category.isEmpty()) {
+//            redirectAttributes.addFlashAttribute("error", "Please select an authorization type");
+//            return "redirect:/sign_in";
+//        }
+//
+//        if (email == null || email.isEmpty()) {
+//            redirectAttributes.addFlashAttribute("error", "Please enter your email");
+//            return "redirect:/sign_in";
+//        }
+//
+//        if (password == null || password.isEmpty()) {
+//            redirectAttributes.addFlashAttribute("error", "Please enter your password");
+//            return "redirect:/sign_in";
+//        }
+//
+//        if ("admin".equalsIgnoreCase(category)) {
+//            return "redirect:/admin";
+//        } else if ("user".equalsIgnoreCase(category)) {
+//            return "redirect:/events";
+//        }
+//
+//
+//        return "redirect:/sign_in";
+//    }
+//}
