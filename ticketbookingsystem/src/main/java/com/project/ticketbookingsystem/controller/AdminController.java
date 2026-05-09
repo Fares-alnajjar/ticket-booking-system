@@ -2,6 +2,8 @@ package com.project.ticketbookingsystem.controller;
 
 import com.project.ticketbookingsystem.dto.EventRequest;
 import com.project.ticketbookingsystem.model.EventEntity;
+import com.project.ticketbookingsystem.model.UserEntity;
+import com.project.ticketbookingsystem.repository.UserRepository;
 import com.project.ticketbookingsystem.service.EventService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -17,9 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController {
 
     private final EventService eventService;
+    private final UserRepository userRepository;
 
-    public AdminController(EventService eventService) {
+    public AdminController(EventService eventService, UserRepository userRepository) {
         this.eventService = eventService;
+        this.userRepository = userRepository;
     }
 
     private void mapRequestToEntity(EventRequest request, EventEntity event) {
@@ -79,7 +83,15 @@ public class AdminController {
     @GetMapping("/manage-events")
     public String getManageEventsPage(Model model) {
         model.addAttribute("events", eventService.getAllEvents());
-        return "/admin/manage-events";
+        return "Admin/manage-events";
+    }
+
+    // ── GET /admin/manage-users ───────────────────────────────────────────────
+    // Shows the full user list
+    @GetMapping("/manage-users")
+    public String getManageUsersPage(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        return "Admin/manage-users";
     }
 
     // ── GET /admin/edit-event/{id} ────────────────────────────────────────────
@@ -90,7 +102,7 @@ public class AdminController {
         try {
             EventEntity event = eventService.getEventById(id);
             model.addAttribute("event", event);
-            return "edit-event";
+            return "Admin/edit-event";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Event not found.");
             return "redirect:/admin/manage-events";
