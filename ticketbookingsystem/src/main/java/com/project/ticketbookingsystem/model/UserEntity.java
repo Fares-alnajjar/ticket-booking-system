@@ -28,7 +28,10 @@ public class UserEntity {
     @Column(nullable = false,unique = true)
     private Long nationalId;
     @Column(nullable = false,unique = true)
-    private Long phoneNumber;
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private String role; // admin or user
     @Column(name = "created_at", updatable = false)  //
     private LocalDateTime createdAt; //
 

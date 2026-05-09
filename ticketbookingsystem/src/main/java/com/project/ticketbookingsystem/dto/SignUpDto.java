@@ -30,7 +30,8 @@ public class SignUpDto {
     private Long nationalId;
 
     @NotNull(message = "Phone number is required")
-    private Long phoneNumber;
+    @Size(min = 11,max=11, message = "must be 11 numbers")
+    private String phoneNumber;
 
     @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
