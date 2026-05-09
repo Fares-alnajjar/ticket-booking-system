@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Edit User</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/adminStyles/AdminMenuStyles.css">
+  <link rel="stylesheet" href="/adminStyles/AddEventStyles.css">
+
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+
+
+    <div th:replace="~{Admin/adminMenu :: sidebar('manage-users')}"></div>
+
+
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="container">
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <span th:text="${error}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <span th:text="${success}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form class="login_form" th:action="@{/admin/update-user}" method="post" th:object="${user}">
+          <div class="mb-3  mt-3 rounded p-2">
+            <h2 class="text-center mt-3">Edit User</h2>
+
+            <input type="hidden" th:field="*{id}" name="id">
+
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Enter name" th:value="${user.name}" required>
+
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control mb-3" id="email" name="email" placeholder="Enter email" th:value="${user.email}" required>
+
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control mb-3" id="password" name="password" placeholder="Enter password" th:value="${user.password}" required>
+
+            <label for="nationalId" class="form-label">National ID</label>
+            <input type="number" class="form-control mb-3" id="nationalId" name="nationalId" placeholder="Enter national ID" th:value="${user.nationalId}" required>
+
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="number" class="form-control mb-3" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" th:value="${user.phoneNumber}" required>
+
+            <button type="submit" class="btn btn-primary w-100">Update User</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+</body>
+</html>
