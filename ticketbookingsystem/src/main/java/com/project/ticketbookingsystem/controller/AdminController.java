@@ -12,7 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Controller
 @RequestMapping("/admin")
@@ -104,8 +105,27 @@ public class AdminController {
                                    RedirectAttributes redirectAttributes) {
         try {
             EventEntity event = eventService.getEventById(id);
-            model.addAttribute("event", event);
+
+            EventRequest request = new EventRequest();
+            request.setId(event.getId());
+            request.setEventName(event.getEventName());
+            request.setCategory(event.getCategory().name());
+            request.setEventDate(event.getEventDate());
+            request.setEventTime(event.getEventTime());
+            request.setLocation(event.getLocation());
+            request.setDescription(event.getDescription());
+            request.setVipPrice(event.getVipPrice());
+            request.setPremiumPrice(event.getPremiumPrice());
+            request.setStandardPrice(event.getStandardPrice());
+            request.setVipCapacity(event.getVipCapacity());
+            request.setPremiumCapacity(event.getPremiumCapacity());
+            request.setStandardCapacity(event.getStandardCapacity());
+            request.setImageUrl(event.getImageUrl());
+            request.setTicketsPerUser(event.getTicketsPerUser());
+
+            model.addAttribute("event", request);
             return "Admin/edit-event";
+
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Event not found.");
             return "redirect:/admin/manage-events";
@@ -119,14 +139,15 @@ public class AdminController {
     public String updateEvent(
             @ModelAttribute @Valid EventRequest request,
             BindingResult result,
+            Model model,
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
             String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
-            redirectAttributes.addFlashAttribute("error", errorMsg);
-            return "redirect:/admin/edit-event/" + request.getId();
+            model.addAttribute("error", errorMsg);
+            model.addAttribute("event", request);
+            return "Admin/edit-event";
         }
-
         try {
             EventEntity event = eventService.getEventById(request.getId());
             mapRequestToEntity(request, event);
