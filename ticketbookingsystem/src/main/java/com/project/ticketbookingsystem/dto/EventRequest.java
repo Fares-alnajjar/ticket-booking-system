@@ -23,6 +23,7 @@ public class EventRequest {
 
     @NotNull(message = "Event date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Future(message = "Event date cant be in the past")
     private LocalDate eventDate;
 
     @NotNull(message = "Event time is required")
