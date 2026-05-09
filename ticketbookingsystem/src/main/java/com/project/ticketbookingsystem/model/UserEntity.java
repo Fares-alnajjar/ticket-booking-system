@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,14 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String role; // admin or user
+    @Column(name = "created_at", updatable = false)  //
+    private LocalDateTime createdAt; //
 
     @OneToMany(mappedBy = "user")
     private List<BookingEntity> bookings;
+    
+    @PrePersist  //
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }
