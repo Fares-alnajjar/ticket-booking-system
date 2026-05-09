@@ -17,7 +17,7 @@ public class SignUpService {
         this.userRepository  = userRepository;
     }
 
-    public UserEntity rsgister(SignUpDto request){
+    public UserEntity register(SignUpDto request){
         if(userRepository.existsByEmail(request.getEmail())){
             throw new IllegalArgumentException("Email already in use");
         }
