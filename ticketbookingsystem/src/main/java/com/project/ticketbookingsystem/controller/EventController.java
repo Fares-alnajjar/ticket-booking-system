@@ -24,8 +24,10 @@ public class EventController {
     }
 
     @GetMapping
-    public String showEvents(Model model) {
-        model.addAttribute("events", eventService.getAllEvents());
+    public String showEvents(@RequestParam(value = "category", required = false) String category,
+                             Model model) {
+        model.addAttribute("events", eventService.getEventsByCategorySelection(category));
+        model.addAttribute("selectedCategory", eventService.normalizeSelectedCategoryLabel(category));
         return "events";
     }
 
