@@ -4,9 +4,10 @@ import com.project.ticketbookingsystem.dto.SignInDto;
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+import java.util.Objects;
+@Service
 public class SignInService {
     private final UserRepository userRepository;
     @Autowired
@@ -14,11 +15,13 @@ public class SignInService {
         this.userRepository  = userRepository;
     }
 
-   /* public UserEntity handlingSignIn(SignInDto request) {
+    public UserEntity handlingSignIn(SignInDto request) {
         UserEntity userEntity = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() ->
                         new IllegalArgumentException("Invalid email or password"));
-
-
-    }*/
+        if (!Objects.equals(userEntity.getPassword(), request.getPassword())){
+            throw new IllegalArgumentException("Invalid password");
+        }
+          return userEntity;
+    }
 }
