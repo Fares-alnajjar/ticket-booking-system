@@ -42,7 +42,7 @@
           <a class="nav-link" href="/my-tickets">My Tickets</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/user/profile">Profile</a>
+          <a class="nav-link" href="/user/profile" th:text="${session.loggedInUser != null} ? ${session.loggedInUser.name} : 'Profile'">Profile</a>
         </li>
 
       </ul>
