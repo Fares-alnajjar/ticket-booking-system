@@ -218,33 +218,33 @@ public class AdminController {
 
     @PostMapping("/update-user")
     public String updateUser(
-            @RequestParam("name") String name,
-            @RequestParam("phone") String phone,
-            @RequestParam("nationalId") Long nationalId,
-            @RequestParam("email") String email,
-            @RequestParam("password") String password,
-            @RequestParam("conPass") String conpass,
-            RedirectAttributes redirectAttributes,
-            Model model) {
-        if (!password.equals(conpass)) {
-            model.addAttribute("errorMessage", "Passwords do not match.");
-            return "Admin/edit-user";
+            @ModelAttribute @Valid SignUpDto request,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
+            model.addAttribute("error", errorMsg);
+            model.addAttribute("event", request);
+            return "Admin/edit-event";
         }
         try {
-            SignUpDto request = new SignUpDto();
-            request.setName(name);
-            request.setPhoneNumber(phone);
-            request.setNationalId(nationalId);
-            request.setEmail(email);
-            request.setPassword(password);
+            UserEntity user = signUpService.getUserById(request.getId());
 
-            signUpService.register(request);
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Account updated successfully! Please sign in");
+            signUpService.updateUser(user);
+            user.setName(request.getName());
+            user.setEmail(request.getEmail());
+            user.setPassword(request.getPassword());
+            user.setNationalId(request.getNationalId());
+            user.setPhoneNumber(request.getPhoneNumber());
+
+            redirectAttributes.addFlashAttribute("success",
+                    "Event \"" + request.getName() + "\" updated successfully!");
             return "redirect:/admin/manage-users";
 
-        } catch (IllegalArgumentException ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "User not found.");
             return "redirect:/admin/manage-users";
         }
     }
