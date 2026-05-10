@@ -18,6 +18,8 @@
 <th:block th:replace="header :: page_cart"></th:block>
 
 <div class="head-container">
+  <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+  <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
   <div class="header">
     <h1 class="title">My Tickets</h1>
@@ -39,9 +41,15 @@
       </div>
 
       <div th:unless="${#lists.isEmpty(bookings)}" class="tickets-list">
-
-
-
+        <div class="ticket-card" th:each="booking : ${bookings}">
+          <h3 th:text="${booking.ticket.event.eventName}">Event Name</h3>
+          <p><strong>Type:</strong> <span th:text="${booking.ticket.type}">VIP</span></p>
+          <p><strong>Price:</strong> $<span th:text="${#numbers.formatDecimal(booking.ticket.price, 1, 2)}">0.00</span></p>
+          <p><strong>Date:</strong> <span th:text="${#temporals.format(booking.ticket.event.eventDate, 'MMMM dd, yyyy')}">Date</span></p>
+          <p><strong>Time:</strong> <span th:text="${#temporals.format(booking.ticket.event.eventTime, 'HH:mm')}">Time</span></p>
+          <p><strong>Location:</strong> <span th:text="${booking.ticket.event.location}">Location</span></p>
+          <p><strong>Status:</strong> <span th:text="${booking.status}">CONFIRMED</span></p>
+        </div>
       </div>
 
     </div>

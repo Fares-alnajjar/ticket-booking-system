@@ -1,6 +1,7 @@
 package com.project.ticketbookingsystem.controller;
 
 import com.project.ticketbookingsystem.dto.EventRequest;
+import com.project.ticketbookingsystem.dto.SignUpDto;
 import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.service.EventService;
@@ -190,6 +191,62 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "User not found.");
         }
         return "redirect:/admin/manage-users";
+    }
+    @GetMapping("/edit-user/{id}")
+    public String getEditUserPage(@PathVariable Long id, Model model,
+                                   RedirectAttributes redirectAttributes) {
+        try {
+            UserEntity user = signUpService.getUserById(id);
+
+            SignUpDto request = new SignUpDto();
+            request.setId(user.getId());
+            request.setName(user.getName());
+            request.setEmail(user.getEmail());
+            request.setPassword(user.getPassword());
+            request.setNationalId(user.getNationalId());
+            request.setPhoneNumber(user.getPhoneNumber());
+
+
+            model.addAttribute("user", request);
+            return "Admin/edit-user";
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "User not found.");
+            return "redirect:/admin/manage-users";
+        }
+    }
+
+    @PostMapping("/update-user")
+    public String updateUser(
+            @RequestParam("name") String name,
+            @RequestParam("phone") String phone,
+            @RequestParam("nationalId") Long nationalId,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("conPass") String conpass,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+        if (!password.equals(conpass)) {
+            model.addAttribute("errorMessage", "Passwords do not match.");
+            return "Admin/edit-user";
+        }
+        try {
+            SignUpDto request = new SignUpDto();
+            request.setName(name);
+            request.setPhoneNumber(phone);
+            request.setNationalId(nationalId);
+            request.setEmail(email);
+            request.setPassword(password);
+
+            signUpService.register(request);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Account updated successfully! Please sign in");
+            return "redirect:/admin/manage-users";
+
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "redirect:/admin/manage-users";
+        }
     }
 
 }

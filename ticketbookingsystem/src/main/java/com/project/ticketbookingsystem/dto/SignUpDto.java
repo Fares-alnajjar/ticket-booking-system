@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SignUpDto {
 
+    private Long id;
     @NotBlank(message = "Name is required")
     private String name;
 
