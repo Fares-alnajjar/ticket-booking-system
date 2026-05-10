@@ -9,6 +9,7 @@ body {
   gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 80px;
 }
 
 .head-container {
