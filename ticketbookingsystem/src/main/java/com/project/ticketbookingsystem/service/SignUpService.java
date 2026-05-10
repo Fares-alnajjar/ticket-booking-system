@@ -5,6 +5,7 @@ import com.project.ticketbookingsystem.dto.SignUpDto;
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,13 @@ import java.util.List;
 @Service
 public class SignUpService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public SignUpService(UserRepository userRepository) {
+    public SignUpService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository  = userRepository;
+        this.passwordEncoder = passwordEncoder;
+
     }
 
     public UserEntity register(SignUpDto request){
@@ -32,7 +37,7 @@ public class SignUpService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .nationalId(request.getNationalId())
-                .password(request.getPassword()) // must be encoded
+                .password(passwordEncoder.encode(request.getPassword())) // must be encoded
                 .phoneNumber(request.getPhoneNumber())
                 .role("user")
                 .build();
