@@ -33,7 +33,4 @@ public class SignUpDto {
     @NotNull(message = "Phone number is required")
     @Size(min = 11,max=11, message = "must be 11 numbers")
     private String phoneNumber;
-
-    @NotBlank(message = "Confirm password is required")
-    private String confirmPassword;
 }

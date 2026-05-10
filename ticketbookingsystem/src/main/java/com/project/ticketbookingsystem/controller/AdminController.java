@@ -226,21 +226,22 @@ public class AdminController {
         if (result.hasErrors()) {
             String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
             model.addAttribute("error", errorMsg);
-            model.addAttribute("event", request);
-            return "Admin/edit-event";
+            model.addAttribute("user", request);
+            return "Admin/edit-user";
         }
         try {
             UserEntity user = signUpService.getUserById(request.getId());
 
-            signUpService.updateUser(user);
             user.setName(request.getName());
             user.setEmail(request.getEmail());
             user.setPassword(request.getPassword());
             user.setNationalId(request.getNationalId());
             user.setPhoneNumber(request.getPhoneNumber());
 
+            signUpService.updateUser(user);
+
             redirectAttributes.addFlashAttribute("success",
-                    "Event \"" + request.getName() + "\" updated successfully!");
+                    "User \"" + request.getName() + "\" updated successfully!");
             return "redirect:/admin/manage-users";
 
         } catch (IllegalArgumentException e) {
