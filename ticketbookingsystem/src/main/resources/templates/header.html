@@ -34,22 +34,21 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" th:if="${session.loggedInUser != null && session.loggedInUser.role != 'admin'}">
           <a class="nav-link" href="/events">Events</a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" th:if="${session.loggedInUser != null && session.loggedInUser.role != 'admin'}">
           <a class="nav-link" href="/my-tickets">My Tickets</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/user/profile" th:text="${session.loggedInUser != null} ? ${session.loggedInUser.name} : 'Profile'">Profile</a>
-        </li>
+
+
 
       </ul>
 
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
 
+        <li class="nav-item" th:if="${session.loggedInUser != null && !#strings.equalsIgnoreCase(session.loggedInUser.role, 'admin')}">
           <button class="nav-link position-relative me-3 cart-toggle-btn" id="cartToggleBtn">
             <i class="bi bi-cart3 fs-5"></i>
             <span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
@@ -57,16 +56,24 @@
             </span>
           </button>
         </li>
-        <li class="nav-item">
 
-          <a class="nav-link" href="/admin">Admin</a>
-        </li>
-        <li class="nav-item">
+
+        <li class="nav-item" th:if="${session.loggedInUser == null}">
           <a class="nav-link" href="/sign_up">Sign Up</a>
         </li>
-        <li class="nav-item">
+
+        <li class="nav-item" th:if="${session.loggedInUser == null}">
           <a class="nav-link" href="/sign_in">Sign In</a>
         </li>
+
+        <li class="nav-item" th:if="${session.loggedInUser != null}">
+          <a class="nav-link" href="/user/profile" th:text="${session.loggedInUser.name}">Profile</a>
+        </li>
+
+        <li class="nav-item" th:if="${session.loggedInUser != null}">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+
       </ul>
 
 

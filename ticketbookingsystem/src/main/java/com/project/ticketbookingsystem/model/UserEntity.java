@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "Users") // table name in data base
+@Table(name = "Users") // table name in database
 @Data               // setters/getters
 @NoArgsConstructor
 @AllArgsConstructor

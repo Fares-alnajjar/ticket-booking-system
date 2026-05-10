@@ -21,10 +21,22 @@ public class SignInController {
     public SignInController(SignInService signInService) {
         this.signInService = signInService;
     }
+//    @GetMapping("/sign_in")
+//    public String getSignInPage() {
+//        return "sign_in";
+//    }
     @GetMapping("/sign_in")
-    public String getSignInPage() {
+    public String getSignInPage(HttpSession session) {
+        UserEntity user = (UserEntity) session.getAttribute("loggedInUser");
+        if (user != null) {
+            if ("admin".equalsIgnoreCase(user.getRole())) {
+                return "redirect:/admin/dashboard";
+            }
+            return "redirect:/events";
+        }
         return "sign_in";
     }
+
 
     @PostMapping("/sign_in")
     public String handleSignIn(
@@ -40,9 +52,14 @@ public class SignInController {
 
             UserEntity user = signInService.handlingSignIn(request);
             session.setAttribute("loggedInUser", user);
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Welcome back, " + user.getName() + "! You have signed in successfully.");
-            return "redirect:/events";
+//            redirectAttributes.addFlashAttribute("successMessage",
+//                    "Welcome back, " + user.getName() + "! You have signed in successfully.");
+//            return "redirect:/events";
+            if ("admin".equalsIgnoreCase(user.getRole())) {
+                return "redirect:/admin/dashboard";
+            } else {
+                return "redirect:/events";
+            }
 
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
@@ -50,45 +67,3 @@ public class SignInController {
         }
     }
 }
-
-//
-//
-//@Controller
-//@RequestMapping("/sign_in")
-//public class SignInController {
-//    @GetMapping()
-//    public String getSignInPage() {
-//        return "sign_in";
-//    }
-//
-//    @PostMapping()
-//    public String signIn(@RequestParam(value = "category", required = false) String category,
-//                         @RequestParam(value = "Email", required = false) String email,
-//                         @RequestParam(value = "Password", required = false) String password,
-//                         RedirectAttributes redirectAttributes) {
-//
-//        if (category == null || category.isEmpty()) {
-//            redirectAttributes.addFlashAttribute("error", "Please select an authorization type");
-//            return "redirect:/sign_in";
-//        }
-//
-//        if (email == null || email.isEmpty()) {
-//            redirectAttributes.addFlashAttribute("error", "Please enter your email");
-//            return "redirect:/sign_in";
-//        }
-//
-//        if (password == null || password.isEmpty()) {
-//            redirectAttributes.addFlashAttribute("error", "Please enter your password");
-//            return "redirect:/sign_in";
-//        }
-//
-//        if ("admin".equalsIgnoreCase(category)) {
-//            return "redirect:/admin";
-//        } else if ("user".equalsIgnoreCase(category)) {
-//            return "redirect:/events";
-//        }
-//
-//
-//        return "redirect:/sign_in";
-//    }
-//}
