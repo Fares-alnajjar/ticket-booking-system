@@ -2,13 +2,22 @@ body {
   margin: 0;
   padding: 0;
 }
-.container {
+.content-container {
   max-width: 1500px;
   margin: 0 auto;
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  justify-content: center;
+  margin-bottom: 80px;
+}
+
+.category-container {
+  min-width: 330px;
+
+}
+
+.event-container {
+  margin-bottom: 90px;
 }
 
 .head-container {
