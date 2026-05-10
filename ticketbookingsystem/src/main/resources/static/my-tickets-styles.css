@@ -99,4 +99,21 @@ body {
   justify-content: center;
 }
 
+.ticket-card {
+  width: 320px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.ticket-card p {
+  margin-bottom: 8px;
+}
+
 

@@ -21,6 +21,8 @@
 
 
 <div class="container">
+  <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
+  <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
 
   <div class="event-header">
     <h1 class="main-event-title" th:text="${event.eventName}">Event Name</h1>
@@ -67,25 +69,7 @@
 
 
 
-        <div class=" mt-4 payment-category">
-
-
-
-          <div class="col-3">
-            <label for="category" class="form-label">Ticket Type</label>
-            <select class="form-control mb-3" id="category" name="category">
-              <option value="">Select Ticket Type</option>
-              <option value="vip">vip</option>
-              <option value="premium">premium</option>
-              <option value="standard">standard</option>
-            </select>
-          </div>
-
-          <div class="col-3 quantity">
-            <label for="quantity" class="form-label">Quantity</label>
-            <input type="number" class="form-control mb-3" id="quantity" name="quantity" placeholder="Enter quantity" min="1" th:max="${event.ticketsPerUser}">
-          </div>
-        </div>
+        <div class=" mt-4 payment-category"></div>
 
 
 
@@ -102,20 +86,43 @@
 
       <div class="booking-summary-card">
         <h2 class="booking-summary-title">Booking Summary</h2>
-        <div class="summary-item">
-          <span class="item-label">Ticket Price</span>
-          <span class="item-value">$150</span>
-        </div>
-        <div class="summary-item">
-          <span class="item-label">Selected Seats</span>
-          <span class="item-value">0</span>
-        </div>
-        <div class="summary-total">
-          <span class="total-label">Total</span>
-          <span class="total-value">$0</span>
-        </div>
-        <button class="add-to-cart-button">Add to Cart</button>
-        <button class="back-to-events-button">Back to Events</button>
+
+        <form method="post" th:action="@{/booking/cart/add}">
+          <input type="hidden" name="eventId" th:value="${event.id}">
+          <input type="hidden" name="userId" th:value="${currentUserId}">
+
+          <div class="mb-3">
+            <label for="ticketType" class="form-label">Ticket Type</label>
+            <select class="form-control" id="ticketType" name="ticketType" required>
+              <option value="">Select Ticket Type</option>
+              <option value="VIP" th:text="${'VIP - $' + #numbers.formatDecimal(event.vipPrice, 1, 2)}">VIP - $0.00</option>
+              <option value="PREMIUM" th:text="${'PREMIUM - $' + #numbers.formatDecimal(event.premiumPrice, 1, 2)}">PREMIUM - $0.00</option>
+              <option value="STANDARD" th:text="${'STANDARD - $' + #numbers.formatDecimal(event.standardPrice, 1, 2)}">STANDARD - $0.00</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity (max per user: <span th:text="${event.ticketsPerUser}">1</span>)</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" min="1" th:attr="max=${event.ticketsPerUser}" required>
+          </div>
+
+          <div class="summary-item">
+            <span class="item-label">VIP Seats Left</span>
+            <span class="item-value" th:text="${event.vipCapacity}">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="item-label">Premium Seats Left</span>
+            <span class="item-value" th:text="${event.premiumCapacity}">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="item-label">Standard Seats Left</span>
+            <span class="item-value" th:text="${event.standardCapacity}">0</span>
+          </div>
+
+          <button type="submit" class="add-to-cart-button">Add to Cart</button>
+        </form>
+        <a href="/payment" class="add-to-cart-button text-decoration-none text-center d-block">Proceed to Payment</a>
+        <a href="/events" class="back-to-events-button text-decoration-none text-center d-block">Back to Events</a>
       </div>
     </div>
 

@@ -1,5 +1,237 @@
 package com.project.ticketbookingsystem.service;
 
+import com.project.ticketbookingsystem.dto.CartItemDto;
+import com.project.ticketbookingsystem.model.BookingEntity;
+import com.project.ticketbookingsystem.model.EventEntity;
+import com.project.ticketbookingsystem.model.TicketEntity;
+import com.project.ticketbookingsystem.model.UserEntity;
+import com.project.ticketbookingsystem.repository.BookingRepository;
+import com.project.ticketbookingsystem.repository.EventRepository;
+import com.project.ticketbookingsystem.repository.TicketRepository;
+import com.project.ticketbookingsystem.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+
+@Service
 public class BookingService {
+    private static final String CART_SESSION_KEY = "CART_ITEMS";
+    private static final String CURRENT_USER_ID_SESSION_KEY = "CURRENT_USER_ID";
+
+    private final EventRepository eventRepository;
+    private final TicketRepository ticketRepository;
+    private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
+
+    public BookingService(EventRepository eventRepository,
+                          TicketRepository ticketRepository,
+                          BookingRepository bookingRepository,
+                          UserRepository userRepository) {
+        this.eventRepository = eventRepository;
+        this.ticketRepository = ticketRepository;
+        this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
+    }
+
+    public EventEntity getEventById(Long eventId) {
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
+    }
+
+    public void addToCart(HttpSession session, Long eventId, String ticketType, Integer quantity) {
+        EventEntity event = getEventById(eventId);
+        int requestedQuantity = validateQuantity(event, quantity);
+        String normalizedType = normalizeTicketType(ticketType);
+        int availableSeats = getAvailableSeats(event, normalizedType);
+
+        if (requestedQuantity > availableSeats) {
+            throw new IllegalArgumentException("Only " + availableSeats + " seats are available for " + normalizedType + " tickets.");
+        }
+
+        List<CartItemDto> cartItems = getCartItems(session);
+        Optional<CartItemDto> existingItem = cartItems.stream()
+                .filter(item -> item.getEventId().equals(eventId) && item.getTicketType().equalsIgnoreCase(normalizedType))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            CartItemDto item = existingItem.get();
+            int newQuantity = item.getQuantity() + requestedQuantity;
+
+            if (newQuantity > event.getTicketsPerUser()) {
+                throw new IllegalArgumentException("Maximum tickets per user is " + event.getTicketsPerUser() + " for this event.");
+            }
+            if (newQuantity > availableSeats) {
+                throw new IllegalArgumentException("Only " + availableSeats + " seats are available for " + normalizedType + " tickets.");
+            }
+
+            item.setQuantity(newQuantity);
+            item.setTotalPrice(newQuantity * item.getUnitPrice());
+        } else {
+            double price = getPriceByType(event, normalizedType);
+            cartItems.add(CartItemDto.builder()
+                    .eventId(eventId)
+                    .eventName(event.getEventName())
+                    .ticketType(normalizedType)
+                    .quantity(requestedQuantity)
+                    .unitPrice(price)
+                    .totalPrice(price * requestedQuantity)
+                    .build());
+        }
+
+        session.setAttribute(CART_SESSION_KEY, cartItems);
+    }
+
+    public List<CartItemDto> getCartItems(HttpSession session) {
+        Object cartObj = session.getAttribute(CART_SESSION_KEY);
+        if (cartObj instanceof List<?>) {
+            @SuppressWarnings("unchecked")
+            List<CartItemDto> cartItems = (List<CartItemDto>) cartObj;
+            return new ArrayList<>(cartItems);
+        }
+        return new ArrayList<>();
+    }
+
+    public double getCartTotal(HttpSession session) {
+        return getCartItems(session).stream().mapToDouble(CartItemDto::getTotalPrice).sum();
+    }
+
+    public int getCartCount(HttpSession session) {
+        return getCartItems(session).stream().mapToInt(CartItemDto::getQuantity).sum();
+    }
+
+    public void clearCart(HttpSession session) {
+        session.setAttribute(CART_SESSION_KEY, new ArrayList<CartItemDto>());
+    }
+
+    public UserEntity resolveCurrentUser(HttpSession session, Long userId) {
+        Long activeUserId = userId;
+        if (activeUserId == null) {
+            Object userSessionObject = session.getAttribute(CURRENT_USER_ID_SESSION_KEY);
+            if (userSessionObject instanceof Long id) {
+                activeUserId = id;
+            }
+        }
+
+        if (activeUserId == null) {
+            activeUserId = userRepository.findAll().stream()
+                    .min(Comparator.comparing(UserEntity::getId))
+                    .map(UserEntity::getId)
+                    .orElseThrow(() -> new IllegalArgumentException("No users found. Please sign up first before booking."));
+        }
+
+        Long resolvedUserId = activeUserId;
+        UserEntity user = userRepository.findById(resolvedUserId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + resolvedUserId));
+
+        session.setAttribute(CURRENT_USER_ID_SESSION_KEY, user.getId());
+        return user;
+    }
+
+    public List<BookingEntity> createBookingsFromCart(HttpSession session, UserEntity user) {
+        List<CartItemDto> cartItems = getCartItems(session);
+        if (cartItems.isEmpty()) {
+            throw new IllegalArgumentException("Your cart is empty.");
+        }
+
+        List<BookingEntity> savedBookings = new ArrayList<>();
+
+        for (CartItemDto item : cartItems) {
+            EventEntity event = getEventById(item.getEventId());
+            String normalizedType = normalizeTicketType(item.getTicketType());
+            int availableSeats = getAvailableSeats(event, normalizedType);
+
+            if (item.getQuantity() > availableSeats) {
+                throw new IllegalArgumentException("Not enough available seats for " + event.getEventName() + " (" + normalizedType + ").");
+            }
+
+            updateEventCapacity(event, normalizedType, item.getQuantity());
+            eventRepository.save(event);
+
+            TicketEntity ticket = getOrCreateTicket(event, normalizedType, getPriceByType(event, normalizedType), getAvailableSeats(event, normalizedType));
+            ticket.setAvailableSeats(getAvailableSeats(event, normalizedType));
+            ticketRepository.save(ticket);
+
+            for (int i = 0; i < item.getQuantity(); i++) {
+                BookingEntity booking = BookingEntity.builder()
+                        .bookingTime(LocalDateTime.now())
+                        .status("CONFIRMED")
+                        .user(user)
+                        .ticket(ticket)
+                        .build();
+                savedBookings.add(bookingRepository.save(booking));
+            }
+        }
+
+        clearCart(session);
+        return savedBookings;
+    }
+
+    public List<BookingEntity> getUserBookings(Long userId) {
+        return bookingRepository.findByUserIdOrderByBookingTimeDesc(userId);
+    }
+
+    private int validateQuantity(EventEntity event, Integer quantity) {
+        if (quantity == null || quantity < 1) {
+            throw new IllegalArgumentException("Quantity must be at least 1.");
+        }
+        if (quantity > event.getTicketsPerUser()) {
+            throw new IllegalArgumentException("Maximum tickets per user is " + event.getTicketsPerUser() + " for this event.");
+        }
+        return quantity;
+    }
+
+    private String normalizeTicketType(String ticketType) {
+        if (ticketType == null || ticketType.isBlank()) {
+            throw new IllegalArgumentException("Please select a ticket type.");
+        }
+
+        String normalized = ticketType.trim().toUpperCase(Locale.ROOT);
+        if (!normalized.equals("VIP") && !normalized.equals("PREMIUM") && !normalized.equals("STANDARD")) {
+            throw new IllegalArgumentException("Invalid ticket type selected.");
+        }
+        return normalized;
+    }
+
+    private double getPriceByType(EventEntity event, String ticketType) {
+        return switch (ticketType) {
+            case "VIP" -> event.getVipPrice();
+            case "PREMIUM" -> event.getPremiumPrice();
+            case "STANDARD" -> event.getStandardPrice();
+            default -> throw new IllegalArgumentException("Invalid ticket type selected.");
+        };
+    }
+
+    private int getAvailableSeats(EventEntity event, String ticketType) {
+        return switch (ticketType) {
+            case "VIP" -> event.getVipCapacity();
+            case "PREMIUM" -> event.getPremiumCapacity();
+            case "STANDARD" -> event.getStandardCapacity();
+            default -> throw new IllegalArgumentException("Invalid ticket type selected.");
+        };
+    }
+
+    private void updateEventCapacity(EventEntity event, String ticketType, int quantity) {
+        switch (ticketType) {
+            case "VIP" -> event.setVipCapacity(event.getVipCapacity() - quantity);
+            case "PREMIUM" -> event.setPremiumCapacity(event.getPremiumCapacity() - quantity);
+            case "STANDARD" -> event.setStandardCapacity(event.getStandardCapacity() - quantity);
+            default -> throw new IllegalArgumentException("Invalid ticket type selected.");
+        }
+    }
+
+    private TicketEntity getOrCreateTicket(EventEntity event, String ticketType, double price, int availableSeats) {
+        return ticketRepository.findByEventIdAndTypeIgnoreCase(event.getId(), ticketType)
+                .orElseGet(() -> TicketEntity.builder()
+                        .event(event)
+                        .type(ticketType)
+                        .price(price)
+                        .availableSeats(availableSeats)
+                        .build());
+    }
 }
-//Kareem Was here

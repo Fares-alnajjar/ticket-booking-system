@@ -53,7 +53,7 @@
           <button class="nav-link position-relative me-3 cart-toggle-btn" id="cartToggleBtn">
             <i class="bi bi-cart3 fs-5"></i>
             <span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
-              0
+              <span th:text="${cartCount}">0</span>
             </span>
           </button>
         </li>
@@ -81,17 +81,29 @@
       <button class="cart-close-btn" id="cartCloseBtn">&times;</button>
     </div>
     <div class="cart-content">
-      <div class="empty-cart-message">
+      <div class="empty-cart-message" th:if="${#lists.isEmpty(cartItems)}">
         <i class="bi bi-cart3"></i>
         <p>Your cart is empty</p>
+      </div>
+      <div th:unless="${#lists.isEmpty(cartItems)}">
+        <div class="mb-3" th:each="item : ${cartItems}">
+          <strong th:text="${item.eventName}">Event Name</strong>
+          <p class="mb-1">
+            <span th:text="${item.ticketType}">TYPE</span> -
+            <span th:text="${item.quantity}">1</span> x $
+            <span th:text="${#numbers.formatDecimal(item.unitPrice, 1, 2)}">0.00</span>
+          </p>
+          <p class="mb-0">Subtotal: $<span th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2)}">0.00</span></p>
+          <hr>
+        </div>
       </div>
     </div>
     <div class="cart-footer">
       <div class="cart-total">
         <span>Total:</span>
-        <span class="total-amount">$0.00</span>
+        <span class="total-amount">$<span th:text="${#numbers.formatDecimal(cartTotal, 1, 2)}">0.00</span></span>
       </div>
-      <button class="checkout-btn">Proceed to Checkout</button>
+      <a href="/payment" class="checkout-btn text-center text-decoration-none">Proceed to Checkout</a>
     </div>
   </div>
 
