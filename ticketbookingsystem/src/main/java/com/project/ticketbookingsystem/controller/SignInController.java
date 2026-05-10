@@ -30,7 +30,7 @@ public class SignInController {
         UserEntity user = (UserEntity) session.getAttribute("loggedInUser");
         if (user != null) {
             if ("admin".equalsIgnoreCase(user.getRole())) {
-                return "redirect:/admin/dashboard";
+                return "redirect:/admin";
             }
             return "redirect:/events";
         }
@@ -56,7 +56,7 @@ public class SignInController {
 //                    "Welcome back, " + user.getName() + "! You have signed in successfully.");
 //            return "redirect:/events";
             if ("admin".equalsIgnoreCase(user.getRole())) {
-                return "redirect:/admin/dashboard";
+                return "redirect:/admin";
             } else {
                 return "redirect:/events";
             }
