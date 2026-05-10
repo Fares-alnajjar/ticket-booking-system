@@ -34,6 +34,11 @@ public class EventController {
                               @RequestParam(value = "userId", required = false) Long userId,
                               HttpSession session,
                               Model model) {
+
+        if (session.getAttribute("loggedInUser") == null) {
+            return "redirect:/sign_in?redirect=/events/booking/" + id;
+        }
+        
         EventEntity event = eventService.getEventById(id);
         model.addAttribute("event", event);
         try {

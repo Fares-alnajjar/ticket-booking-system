@@ -42,6 +42,7 @@ public class SignInController {
     public String handleSignIn(
             @RequestParam("Email") String email,
             @RequestParam("Password") String password,
+            @RequestParam(value = "redirect", required = false) String redirectUrl,
             RedirectAttributes redirectAttributes,
             Model model,
             HttpSession session) {
@@ -57,7 +58,11 @@ public class SignInController {
 //            return "redirect:/events";
             if ("admin".equalsIgnoreCase(user.getRole())) {
                 return "redirect:/admin/dashboard";
-            } else {
+            }
+            else if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                return "redirect:" + redirectUrl;
+            }
+            else {
                 return "redirect:/events";
             }
 
