@@ -3,21 +3,6 @@
   padding: 0;
 }
 
-.navbar {
-  padding-top: 0.6rem !important;
-  padding-bottom: 0.6rem !important;
-}
-
-.navbar-brand {
-  font-size: 1.2rem !important;
-  font-weight: 500 !important;
-}
-
-.nav-link {
-  font-size: 1rem !important;
-  font-weight: 500 !important;
-}
-
 h2 {
   text-align: center;
   font-size: 1.9rem;
