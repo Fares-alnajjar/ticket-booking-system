@@ -16,6 +16,10 @@ body {
 
 }
 
+.event-container {
+  margin-bottom: 90px;
+}
+
 .head-container {
   padding-top: 40px;
   max-width: 1275px;
