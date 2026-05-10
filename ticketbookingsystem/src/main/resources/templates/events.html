@@ -47,6 +47,10 @@
 
 
   <div class="event-container mt-3">
+    <div th:if="${selectedCategory != 'All Categories' and #lists.isEmpty(events)}"
+         class="alert alert-info w-100" role="alert">
+      No events in this category yet.
+    </div>
     <div class="row g-4">
 
       <div class="col-md-3" th:each="event : ${events}">

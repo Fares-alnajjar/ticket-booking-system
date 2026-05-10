@@ -30,7 +30,7 @@ public class SignInController {
         UserEntity user = (UserEntity) session.getAttribute("loggedInUser");
         if (user != null) {
             if ("admin".equalsIgnoreCase(user.getRole())) {
-                return "redirect:/admin";
+                return "redirect:/admin/dashboard";
             }
             return "redirect:/events";
         }
@@ -42,6 +42,7 @@ public class SignInController {
     public String handleSignIn(
             @RequestParam("Email") String email,
             @RequestParam("Password") String password,
+            @RequestParam(value = "redirect", required = false) String redirectUrl,
             RedirectAttributes redirectAttributes,
             Model model,
             HttpSession session) {
@@ -56,8 +57,12 @@ public class SignInController {
 //                    "Welcome back, " + user.getName() + "! You have signed in successfully.");
 //            return "redirect:/events";
             if ("admin".equalsIgnoreCase(user.getRole())) {
-                return "redirect:/admin";
-            } else {
+                return "redirect:/admin/dashboard";
+            }
+            else if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                return "redirect:" + redirectUrl;
+            }
+            else {
                 return "redirect:/events";
             }
 
