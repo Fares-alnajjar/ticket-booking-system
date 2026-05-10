@@ -11,10 +11,4 @@ public class HomeController {
     public String getHomePage() {
         return "home_page";
     }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/sign_in";
-    }
-   }
+}

@@ -23,6 +23,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/sign_in")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
                 );
         return http.build();
     }
