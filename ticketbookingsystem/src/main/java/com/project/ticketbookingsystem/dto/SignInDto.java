@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SignInDto {
-    @NotBlank(message = "Please select an authorization type")
-    private String role;
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email is required")
     private String email;
