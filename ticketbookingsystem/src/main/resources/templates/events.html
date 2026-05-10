@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: page_head">
   <meta charset="UTF-8">
-  <title>Sign in</title>
+  <title>event page</title>
 </head>
 <body>
 
@@ -28,17 +28,18 @@
 
 
 
-  <div class="select-category">
-    <div class="row justify-content-start">
-      <div class="col-3">
-        <label for="category" class="form-label"></label>
-        <select class="form-control" id="category" name="category">
-          <option value="All Categories">All Categories</option>
-          <option value="Football">Football</option>
-          <option value="Basketball">Basketball</option>
-          <option value="Handball">Handball</option>
-          <option value="Others">Others</option>
-        </select>
+  <div class="content-container mb-3">
+    <div class="row">
+      <div class="category-container col-auto">
+        <form method="get" th:action="@{/events}">
+          <select class="form-select" id="category" name="category" onchange="this.form.submit()">
+            <option value="All Categories" th:selected="${selectedCategory == 'All Categories'}">All Categories</option>
+            <option value="Football" th:selected="${selectedCategory == 'Football'}">Football</option>
+            <option value="Basketball" th:selected="${selectedCategory == 'Basketball'}">Basketball</option>
+            <option value="Handball" th:selected="${selectedCategory == 'Handball'}">Handball</option>
+            <option value="Others" th:selected="${selectedCategory == 'Others'}">Others</option>
+          </select>
+        </form>
       </div>
     </div>
   </div>
@@ -99,7 +100,7 @@
       <div class="row g-4">
         <div class="col-md-3" th:each="event : ${events}">
           <div class="card event-card shadow-sm">
-            <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top">
+            <img th:src="${event.imageUrl}" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title" th:text="${event.eventName}">Event Name</h5>
               <p class="card-text">
