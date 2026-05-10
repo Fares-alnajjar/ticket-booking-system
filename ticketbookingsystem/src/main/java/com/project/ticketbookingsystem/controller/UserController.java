@@ -1,21 +1,23 @@
 package com.project.ticketbookingsystem.controller;
 
+import com.project.ticketbookingsystem.dto.SignUpDto;
 import com.project.ticketbookingsystem.model.UserEntity;
+import com.project.ticketbookingsystem.repository.UserRepository;
 import com.project.ticketbookingsystem.service.SignUpService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final SignUpService signUpService;
+
 
     @Autowired
     public UserController(SignUpService signUpService) {
@@ -34,21 +36,28 @@ public class UserController {
 
     @PostMapping("/profile/update")
     public String updateProfile(
-            @RequestParam("name") String name,
-            @RequestParam("phoneNumber") String phoneNumber,
-            @RequestParam(value = "password", required = false) String password,
+            @Valid @ModelAttribute("updateProfileDto") SignUpDto dto,
+            BindingResult bindingResult,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
+
         UserEntity user = (UserEntity) session.getAttribute("loggedInUser");
         if (user == null) {
             return "redirect:/sign_in";
         }
 
-        user.setName(name);
-        user.setPhoneNumber(phoneNumber);
-        if (password != null && !password.isEmpty()) {
-            user.setPassword(password);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.SignUpDto", bindingResult);
+            redirectAttributes.addFlashAttribute("updateProfileDto", dto);
+            return "redirect:/user/profile";
         }
+
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setPassword((dto.getPassword()));
+
 
         signUpService.updateUser(user);
         session.setAttribute("loggedInUser", user);
