@@ -1,0 +1,18 @@
+.profile-container{
+  width: 1300px;
+}
+
+.bg-primary{
+  background-color: #0d2851 !important;
+  border-color: #0d2851 !important;
+}
+
+.update-profile-btn {
+    background-color: #0d2851 !important;
+    border-color: #0d2851 !important;
+}
+
+.update-profile-btn:hover {
+    background-color: #104078 !important;
+    border-color: #104078 !important;
+}
