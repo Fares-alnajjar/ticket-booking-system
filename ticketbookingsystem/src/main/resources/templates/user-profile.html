@@ -27,9 +27,12 @@
 
   <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
   <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
-  <script>
-    setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
-  </script>
+    <script>
+        setTimeout(() => {
+          document.querySelector('.alert-success')?.remove();
+          document.querySelector('.alert-danger')?.remove();
+        }, 3000);
+    </script>
 
   <div class="profile-container">
     <div class="col-12 col-md-10 col-xl-10">
@@ -41,25 +44,66 @@
           <form th:action="@{/user/profile/update}" method="post" th:object="${user}">
 
             <div class="row mb-3">
-              <div class="col-md-6">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" th:field="*{name}" required>
-              </div>
-              <div class="col-md-6">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" th:field="*{email}">
-              </div>
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Name</label>
+
+                    <input type="text"
+                           class="form-control"
+                           id="name"
+                           th:field="*{name}"
+                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''">
+
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           th:field="*{email}"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''">
+
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('email')}"
+                         th:errors="*{email}">
+                    </div>
+                </div>
             </div>
 
             <div class="row mb-3">
-              <div class="col-md-6">
-                <label for="nationalId" class="form-label">National ID</label>
-                <input type="text" class="form-control" id="nationalId" th:field="*{nationalId}" readonly>
-              </div>
-              <div class="col-md-6">
-                <label for="phoneNumber" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" required>
-              </div>
+                <div class="col-md-6">
+                    <label for="nationalId" class="form-label">National ID</label>
+
+                    <input type="text"
+                           class="form-control"
+                           id="nationalId"
+                           th:field="*{nationalId}"
+                           readonly
+                           th:classappend="${#fields.hasErrors('nationalId')} ? 'is-invalid' : ''">
+
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('nationalId')}"
+                         th:errors="*{nationalId}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="phoneNumber" class="form-label">Phone Number</label>
+
+                    <input type="text"
+                           class="form-control"
+                           id="phoneNumber"
+                           th:field="*{phoneNumber}"
+                           th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid' : ''">
+
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('phoneNumber')}"
+                         th:errors="*{phoneNumber}">
+                    </div>
+                </div>
             </div>
 
             <div class="mb-3 col-md-6">
@@ -67,10 +111,21 @@
               <input type="text" class="form-control" id="createdAt" th:value="${#temporals.format(user.createdAt, 'MMMM dd, yyyy')}" readonly>
             </div>
 
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter new password to change">
-            </div>
+              <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+
+                  <input type="password"
+                         class="form-control"
+                         id="password"
+                         th:field="*{password}"
+                         placeholder="Enter new password to change"
+                         th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''">
+
+                  <div class="invalid-feedback"
+                       th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}">
+                  </div>
+              </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
               <a href="/" class="btn btn-secondary me-md-2">Cancel</a>

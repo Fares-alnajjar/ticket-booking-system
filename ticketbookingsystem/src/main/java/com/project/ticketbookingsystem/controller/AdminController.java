@@ -2,6 +2,7 @@ package com.project.ticketbookingsystem.controller;
 
 import com.project.ticketbookingsystem.dto.EventRequest;
 import com.project.ticketbookingsystem.dto.SignUpDto;
+import com.project.ticketbookingsystem.dto.UpdateProfileDto;
 import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.model.TicketEntity;
 import com.project.ticketbookingsystem.model.UserEntity;
@@ -238,7 +239,7 @@ public class AdminController {
 
     @PostMapping("/update-user")
     public String updateUser(
-            @ModelAttribute @Valid SignUpDto request,
+            @ModelAttribute @Valid UpdateProfileDto request,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes) {

@@ -2,6 +2,7 @@ package com.project.ticketbookingsystem.service;
 
 import com.project.ticketbookingsystem.dto.SignUpDto;
 
+import com.project.ticketbookingsystem.dto.UpdateProfileDto;
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +80,7 @@ public class SignUpService {
         userRepository.deleteById(id);
     }
 
-    public void updateUser(SignUpDto request) {
+    public void updateUser(UpdateProfileDto request) {
 
         UserEntity user = getUserById(request.getId());
 
