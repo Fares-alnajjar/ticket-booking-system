@@ -58,17 +58,21 @@
           <img th:src="${event.imageUrl}" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title" th:text="${event.eventName}">Event Name</h5>
-            <p class="card-text">
-              <span th:text="${#temporals.format(event.eventDate, 'MMMM dd, yyyy')}">Date</span> •
-              <span th:text="${#temporals.format(event.eventTime, 'h:mm a')}">Time</span> •
+            <p class="card-text location-text">
               <span th:text="${event.location}">Location</span>
             </p>
 
-            <a th:if="${@eventScheduleService.isOpenForBooking(event)}"
-               th:href="@{/events/booking/{id}(id=${event.id})}" class="btn btn-primary">Book Now</a>
-            <button type="button" class="btn btn-secondary" disabled
-                    th:unless="${@eventScheduleService.isOpenForBooking(event)}"
-                    th:attr="title=${@eventScheduleService.getBookingClosedMessage(event)}">Booking closed</button>
+            <div class="card-footer">
+              <p class="card-text date-text mb-2">
+                <span th:text="${#temporals.format(event.eventDate, 'MMMM dd, yyyy')}">Date</span>
+                <span th:text="${#temporals.format(event.eventTime, 'h:mm a')}">Time</span>
+              </p>
+              <a th:if="${@eventScheduleService.isOpenForBooking(event)}"
+                 th:href="@{/events/booking/{id}(id=${event.id})}" class="btn btn-primary">Book Now</a>
+              <button type="button" class="btn btn-secondary" disabled
+                      th:unless="${@eventScheduleService.isOpenForBooking(event)}"
+                      th:attr="title=${@eventScheduleService.getBookingClosedMessage(event)}">Booking closed</button>
+            </div>
           </div>
         </div>
       </div>
