@@ -70,7 +70,7 @@ public class EventEntity {
     @Column(nullable = false)
     private Integer ticketsPerUser;
 
-    @OneToMany(mappedBy = "event") // "event"variable name in owner side
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true) // "event"variable name in owner side
     List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha
 
 }
