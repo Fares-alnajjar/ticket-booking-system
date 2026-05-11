@@ -245,4 +245,34 @@ public class BookingService {
                         .availableSeats(availableSeats)
                         .build());
     }
+
+    //used in admin controller
+    public long getTotalTicketCount() {
+        return ticketRepository.count();
+    }
+
+    public double getTotalRevenue() {
+        List<TicketEntity> tickets = ticketRepository.findAll();
+        double totalRev = 0;
+        for (TicketEntity ticket : tickets) {
+            totalRev =totalRev + ticket.getPrice();
+        }
+        return totalRev;
+    }
+
+    public List<TicketEntity> getAllTickets() {
+        return ticketRepository.findAll();
+    }
+
+    public void deleteTicket(Long id) {
+        TicketEntity ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Ticket not found with id: " + id));
+        ticketRepository.delete(ticket);
+    }
+
+    public TicketEntity getTicketById(Long id) {
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Ticket not found with id: " + id));
+    }
+
 }

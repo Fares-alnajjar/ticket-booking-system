@@ -3,7 +3,9 @@ package com.project.ticketbookingsystem.controller;
 import com.project.ticketbookingsystem.dto.EventRequest;
 import com.project.ticketbookingsystem.dto.SignUpDto;
 import com.project.ticketbookingsystem.model.EventEntity;
+import com.project.ticketbookingsystem.model.TicketEntity;
 import com.project.ticketbookingsystem.model.UserEntity;
+import com.project.ticketbookingsystem.service.BookingService;
 import com.project.ticketbookingsystem.service.EventService;
 import com.project.ticketbookingsystem.service.SignUpService;
 import jakarta.validation.Valid;
@@ -22,10 +24,12 @@ public class AdminController {
 
     private final EventService eventService;
     private final SignUpService signUpService;
+    private final BookingService bookingService;
 
-    public AdminController(EventService eventService, SignUpService signUpService) {
+    public AdminController(EventService eventService, SignUpService signUpService, BookingService bookingService) {
         this.eventService = eventService;
         this.signUpService = signUpService;
+        this.bookingService = bookingService;
     }
 
     private void mapRequestToEntity(EventRequest request, EventEntity event) {
@@ -48,11 +52,14 @@ public class AdminController {
     // ── GET /admin ────────────────────────────────────────────────────────────
     @GetMapping
     public String getAdminPage(Model model) {
-        model.addAttribute("events",      eventService.getAllEvents());
+
         model.addAttribute("totalEvents", eventService.getTotalEvents());
-        //user part
-        model.addAttribute("users",       signUpService.getAllUsers());
+
         model.addAttribute("totalUsers",  signUpService.getTotalUsers());
+
+        model.addAttribute("totalTickets",bookingService.getTotalTicketCount());
+
+        model.addAttribute("totalRevenue",bookingService.getTotalRevenue());
         return "Admin/Admin";
     }
 
@@ -250,6 +257,26 @@ public class AdminController {
         }
     }
 
+    // ── GET /admin/manage-tickets ──────────────────────────────────────────────
+    @GetMapping("/manage-tickets")
+    public String getManageTicketsPage(Model model) {
+        model.addAttribute("tickets", bookingService.getAllTickets());
+        return "Admin/manage-tickets";
+    }
+
+    //DELETE TICKET
+    @PostMapping("/delete-ticket/{id}")
+    public String deleteTicket(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            TicketEntity ticket = bookingService.getTicketById(id);
+            String name = ticket.getType();
+            bookingService.deleteTicket(id);
+            redirectAttributes.addFlashAttribute("success", "Ticket \"" + name + "\" deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "Ticket not found.");
+        }
+        return "redirect:/admin/manage-tickets";
+    }
 
 
 }
