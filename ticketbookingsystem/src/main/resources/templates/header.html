@@ -49,12 +49,12 @@
       <ul class="navbar-nav ms-auto">
 
         <li class="nav-item" th:if="${session.loggedInUser != null && !#strings.equalsIgnoreCase(session.loggedInUser.role, 'admin')}">
-          <button class="nav-link position-relative me-3 cart-toggle-btn" id="cartToggleBtn">
+          <a class="nav-link position-relative me-3" href="/cart">
             <i class="bi bi-cart3 fs-5"></i>
             <span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
               <span th:text="${cartCount}">0</span>
             </span>
-          </button>
+          </a>
         </li>
 
 
@@ -81,7 +81,8 @@
   </div>
 </nav>
 
-<th:block th:fragment="page_cart">
+<!-- Cart Side Panel -->
+<div th:fragment="page_cart">
   <div class="cart-panel" id="cartPanel">
     <div class="cart-header">
       <h3>Shopping Cart</h3>
@@ -110,41 +111,36 @@
         <span>Total:</span>
         <span class="total-amount">$<span th:text="${#numbers.formatDecimal(cartTotal, 1, 2)}">0.00</span></span>
       </div>
-      <a href="/payment" class="checkout-btn text-center text-decoration-none">Proceed to Checkout</a>
+      <a href="/cart" class="checkout-btn text-center text-decoration-none">Proceed to Cart</a>
     </div>
   </div>
 
+  <div class="cart-overlay" id="cartOverlay"></div>
+</div>
+<!---->
+<!--<script>-->
+<!--  const cartToggleBtn = document.getElementById('cartToggleBtn');-->
+<!--  const cartCloseBtn = document.getElementById('cartCloseBtn');-->
+<!--  const cartPanel = document.getElementById('cartPanel');-->
+<!--  const cartOverlay = document.getElementById('cartOverlay');-->
 
-<div class="cart-overlay" id="cartOverlay"></div>
+<!--  if (cartToggleBtn && cartCloseBtn && cartPanel && cartOverlay) {-->
+<!--    cartToggleBtn.addEventListener('click', function() {-->
+<!--      cartPanel.classList.add('open');-->
+<!--      cartOverlay.classList.add('open');-->
+<!--    });-->
 
+<!--    cartCloseBtn.addEventListener('click', function() {-->
+<!--      cartPanel.classList.remove('open');-->
+<!--      cartOverlay.classList.remove('open');-->
+<!--    });-->
 
-
-
-<script>
-  const cartToggleBtn = document.getElementById('cartToggleBtn');
-  const cartCloseBtn = document.getElementById('cartCloseBtn');
-  const cartPanel = document.getElementById('cartPanel');
-  const cartOverlay = document.getElementById('cartOverlay');
-
-  if (cartToggleBtn && cartCloseBtn && cartPanel && cartOverlay) {
-    cartToggleBtn.addEventListener('click', function() {
-      cartPanel.classList.add('open');
-      cartOverlay.classList.add('open');
-    });
-
-
-    cartCloseBtn.addEventListener('click', function() {
-      cartPanel.classList.remove('open');
-      cartOverlay.classList.remove('open');
-    });
-
-    cartOverlay.addEventListener('click', function() {
-      cartPanel.classList.remove('open');
-      cartOverlay.classList.remove('open');
-    });
-  }
-</script>
-</th:block>
+<!--    cartOverlay.addEventListener('click', function() {-->
+<!--      cartPanel.classList.remove('open');-->
+<!--      cartOverlay.classList.remove('open');-->
+<!--    });-->
+<!--  }-->
+<!--</script>-->
 
 <!-- -->
 

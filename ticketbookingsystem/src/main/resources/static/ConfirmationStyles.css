@@ -1,0 +1,61 @@
+.confirmation-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1300px;
+  margin: 30px auto;
+  padding: 0 16px;
+  width: 100%;
+}
+
+
+.confirmation-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.confirmation-checkmark {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.confirmation-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.confirmation-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 32px;
+}
+
+.confirmation-btn {
+  display: inline-block;
+  padding: 14px 36px;
+  background-color: #007bff;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.confirmation-btn:hover {
+  background-color: #0056b3;
+  color: white;
+}

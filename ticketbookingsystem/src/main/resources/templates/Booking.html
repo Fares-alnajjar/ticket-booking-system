@@ -23,6 +23,9 @@
 <div class="container">
   <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
   <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
+  <script>
+    setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
+  </script>
 
   <div class="event-header">
     <h1 class="main-event-title" th:text="${event.eventName}">Event Name</h1>
@@ -35,7 +38,7 @@
   </div>
 
 
-  <!--  <div class = "divider-line mb-1"></div>-->
+
 
 
 

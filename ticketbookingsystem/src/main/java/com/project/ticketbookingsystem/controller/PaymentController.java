@@ -61,10 +61,34 @@ public class PaymentController {
             paymentService.saveSuccessfulPayments(createdBookings, cardHolderName, cardNumber, expiryDate, cvv);
 
             redirectAttributes.addFlashAttribute("successMessage", "Payment completed successfully.");
-            return "redirect:/my-tickets";
+            return "redirect:/confirmation";
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
             return "redirect:/payment";
         }
     }
+
+    @GetMapping("/cart")
+    public String showCartPage(HttpSession session,
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            if (bookingService.getCartItems(session).isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Your cart is empty. Add tickets first.");
+                return "redirect:/events";
+            }
+            model.addAttribute("cartItems", bookingService.getCartItems(session));
+            model.addAttribute("cartTotal", bookingService.getCartTotal(session));
+            return "cart";
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+            return "redirect:/events";
+        }
+    }
+
+    @GetMapping("/confirmation")
+    public String showConfirmationPage(HttpSession session, Model model) {
+        return "confirmation";
+    }
+
 }

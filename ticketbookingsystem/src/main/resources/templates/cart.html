@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: page_head">
   <meta charset="UTF-8">
-  <title>Payment</title>
+  <title>Cart</title>
 </head>
 <body>
 
@@ -13,6 +13,7 @@
 <th:block th:replace="header :: page_cart"></th:block>
 
 <div class="container">
+
   <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
   <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
   <script>
@@ -21,12 +22,12 @@
 
 
   <div class="progress-steps">
-    <div class="step completed">
+    <div class="step active">
       <div class="step-circle">1</div>
       <span class="step-label">Cart</span>
     </div>
-    <div class="step-line completed"></div>
-    <div class="step active">
+    <div class="step-line"></div>
+    <div class="step">
       <div class="step-circle">2</div>
       <span class="step-label">Payment</span>
     </div>
@@ -40,37 +41,51 @@
 
 
 
+
+
   <div class="page-header">
-    <h1>Payment</h1>
-    <p>Review your cart and complete payment.</p>
+    <h1>Review Your Order</h1>
+    <p>Please review your order before proceeding to payment.</p>
   </div>
 
 
   <div class="page-content">
     <div class="payment-card">
-      <h2>Card Details</h2>
-      <form method="post" th:action="@{/payment}">
-        <input type="hidden" name="userId" th:value="${currentUserId}">
-
-        <label for="cardHolderName" class="form-label">Name On Card</label>
-        <input id="cardHolderName" name="cardHolderName" class="form-control mb-3" required>
-
-        <label for="cardNumber" class="form-label">Card Number</label>
-        <input id="cardNumber" name="cardNumber" class="form-control mb-3" placeholder="1234 5678 9012 3456" required>
-
-        <div class="row">
-          <div class="col-6">
-            <label for="expiryDate" class="form-label">Expiry (MM/YY)</label>
-            <input id="expiryDate" name="expiryDate" class="form-control mb-3" placeholder="08/28" required>
-          </div>
-          <div class="col-6">
-            <label for="cvv" class="form-label">CVV</label>
-            <input id="cvv" name="cvv" class="form-control mb-3" placeholder="123" required>
-          </div>
+      <h2>Order Items</h2>
+      <div th:if="${cartItems != null and !cartItems.empty}">
+        <div th:each="item : ${cartItems}" class="cart-item">
+          <form method="post" th:action="@{/booking/cart/update}" class="d-flex justify-content-between align-items-center w-100">
+            <input type="hidden" name="eventId" th:value="${item.eventId}">
+            <input type="hidden" name="oldTicketType" th:value="${item.ticketType}">
+            <div>
+              <strong th:text="${item.eventName}">Event Name</strong>
+              <div class="d-flex gap-2 mt-1">
+                <select name="newTicketType" class="form-select form-select-sm" style="width: 130px;">
+                  <option value="VIP" th:selected="${item.ticketType == 'VIP'}">VIP</option>
+                  <option value="PREMIUM" th:selected="${item.ticketType == 'PREMIUM'}">PREMIUM</option>
+                  <option value="STANDARD" th:selected="${item.ticketType == 'STANDARD'}">STANDARD</option>
+                </select>
+                <input type="number" name="newQuantity" th:value="${item.quantity}" min="1" class="form-control form-control-sm" style="width: 70px;">
+              </div>
+            </div>
+            <div class="text-end">
+              <span th:text="${'$' + #numbers.formatDecimal(item.totalPrice, 1, 2)}">$0.00</span>
+              <div class="d-flex gap-2 mt-1">
+                <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                <button type="submit" th:formaction="@{/booking/cart/remove}" class="btn btn-sm btn-outline-danger">Remove</button>
+              </div>
+            </div>
+          </form>
         </div>
-
-        <button type="submit" class="pay-now-button">Pay Now</button>
-      </form>
+        <form method="get" th:action="@{/payment}">
+          <input type="hidden" name="userId" th:value="${currentUserId}">
+          <button type="submit" class="pay-now-button">Continue to Payment</button>
+        </form>
+      </div>
+      <div th:if="${cartItems == null or cartItems.empty}">
+        <p class="text-center text-muted">Your cart is empty.</p>
+        <a href="/events" class="btn btn-primary w-100">Browse Events</a>
+      </div>
     </div>
 
     <div class="summary-card">
