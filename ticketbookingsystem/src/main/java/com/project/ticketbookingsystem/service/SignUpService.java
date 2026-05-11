@@ -8,6 +8,7 @@ import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -130,7 +131,7 @@ public class SignUpService {
 
     // to put users in dashboard
     public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public UserEntity getUserById(Long id) {

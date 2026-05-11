@@ -1,5 +1,6 @@
 package com.project.ticketbookingsystem.service;
 
+import org.springframework.data.domain.Sort;
 import com.project.ticketbookingsystem.repository.EventRepository;
 import org.springframework.stereotype.Service;
 import com.project.ticketbookingsystem.model.EventEntity;
@@ -21,7 +22,7 @@ public class EventService {
 
     // Retrieve all events (to put list of events in dashboard used in getAllEvents method in controller)
     public List<EventEntity> getAllEvents() {
-        return eventRepository.findAll();
+        return eventRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     /**
