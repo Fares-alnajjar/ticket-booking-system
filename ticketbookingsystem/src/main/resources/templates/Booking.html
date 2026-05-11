@@ -129,7 +129,7 @@
 
           <button type="submit" class="add-to-cart-button">Add to Cart</button>
         </form>
-        <form method="get" th:action="@{/payment}">
+        <form method="get" th:action="@{/payment}" th:if="${cartCount > 0}">
           <input type="hidden" name="userId" th:value="${currentUserId}">
           <button type="submit" class="add-to-cart-button w-100">Proceed to Payment</button>
         </form>
