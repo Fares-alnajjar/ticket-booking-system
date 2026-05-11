@@ -274,5 +274,55 @@ public class BookingService {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket not found with id: " + id));
     }
+    public void updateCartItem(HttpSession session, Long eventId, String oldTicketType, String newTicketType, Integer newQuantity) {
+        String normalizedOld = normalizeTicketType(oldTicketType);
+        String normalizedNew = normalizeTicketType(newTicketType);
+        if (newQuantity == null || newQuantity < 1) {
+            throw new IllegalArgumentException("Quantity must be at least 1.");
+        }
 
+        EventEntity event = getEventById(eventId);
+        if (newQuantity > event.getTicketsPerUser()) {
+            throw new IllegalArgumentException("Maximum tickets per user is " + event.getTicketsPerUser() + " for this event.");
+        }
+        int availableSeats = getAvailableSeats(event, normalizedNew);
+        if (newQuantity > availableSeats) {
+            throw new IllegalArgumentException("Only " + availableSeats + " seats available for " + normalizedNew + ".");
+        }
+
+        List<CartItemDto> cartItems = getCartItems(session);
+        cartItems.removeIf(item -> item.getEventId().equals(eventId) && item.getTicketType().equalsIgnoreCase(normalizedOld));
+
+        Optional<CartItemDto> existing = cartItems.stream()
+                .filter(item -> item.getEventId().equals(eventId) && item.getTicketType().equalsIgnoreCase(normalizedNew))
+                .findFirst();
+
+        if (existing.isPresent()) {
+            CartItemDto item = existing.get();
+            item.setQuantity(newQuantity);
+            item.setTotalPrice(newQuantity * item.getUnitPrice());
+        } else {
+            double price = getPriceByType(event, normalizedNew);
+            cartItems.add(CartItemDto.builder()
+                    .eventId(eventId)
+                    .eventName(event.getEventName())
+                    .ticketType(normalizedNew)
+                    .quantity(newQuantity)
+                    .unitPrice(price)
+                    .totalPrice(price * newQuantity)
+                    .build());
+        }
+
+        session.setAttribute(CART_SESSION_KEY, cartItems);
+    }
+
+    public void removeCartItem(HttpSession session, Long eventId, String ticketType) {
+        String normalized = normalizeTicketType(ticketType);
+        List<CartItemDto> cartItems = getCartItems(session);
+        boolean removed = cartItems.removeIf(item -> item.getEventId().equals(eventId) && item.getTicketType().equalsIgnoreCase(normalized));
+        if (!removed) {
+            throw new IllegalArgumentException("Item not found in cart.");
+        }
+        session.setAttribute(CART_SESSION_KEY, cartItems);
+    }
 }
