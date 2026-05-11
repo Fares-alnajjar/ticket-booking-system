@@ -288,21 +288,6 @@ public class BookingService {
         return bookingRepository.count();
     }
 
-    public List<TicketEntity> getAllTickets() {
-        return ticketRepository.findAll();
-    }
-
-    public void deleteTicket(Long id) {
-        TicketEntity ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Ticket not found with id: " + id));
-        ticketRepository.delete(ticket);
-    }
-
-    public TicketEntity getTicketById(Long id) {
-        return ticketRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Ticket not found with id: " + id));
-    }
-
 
 
     public void updateCartItem(HttpSession session, Long eventId, String oldTicketType, String newTicketType, Integer newQuantity) {
