@@ -64,7 +64,11 @@
               <span th:text="${event.location}">Location</span>
             </p>
 
-            <a th:href="@{/events/booking/{id}(id=${event.id})}" class="btn btn-primary">Book Now</a>
+            <a th:if="${@eventScheduleService.isOpenForBooking(event)}"
+               th:href="@{/events/booking/{id}(id=${event.id})}" class="btn btn-primary">Book Now</a>
+            <button type="button" class="btn btn-secondary" disabled
+                    th:unless="${@eventScheduleService.isOpenForBooking(event)}"
+                    th:attr="title=${@eventScheduleService.getBookingClosedMessage(event)}">Booking closed</button>
           </div>
         </div>
       </div>

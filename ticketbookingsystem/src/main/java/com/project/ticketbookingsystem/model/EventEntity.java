@@ -2,10 +2,8 @@ package com.project.ticketbookingsystem.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -69,6 +67,12 @@ public class EventEntity {
 
     @Column(nullable = false)
     private Integer ticketsPerUser;
+
+    /**
+     * How long the event runs from start (event date + time), in minutes.
+     * If null (legacy rows), {@link EventScheduleService} treats this as 60 minutes.
+     */
+    private Integer durationMinutes;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true) // "event"variable name in owner side
     List<TicketEntity> tickets; // need to know why List not arrayList (me too) hahaha

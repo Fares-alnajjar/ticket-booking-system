@@ -64,6 +64,8 @@ public class SignInController {
                 return "redirect:" + redirectUrl;
             }
             else {
+                redirectAttributes.addFlashAttribute("successMessage",
+                    "Welcome back, " + user.getName() + "! You have signed in successfully.");
                 return "redirect:/events";
             }
 

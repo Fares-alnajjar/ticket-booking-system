@@ -28,6 +28,12 @@ public class TicketEntity {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private EventEntity event;
+    /**
+     * ACTIVE while the event has not ended; EXPIRED after event end (updated when a related booking is loaded).
+     */
+    @Column(length = 32)
+    @Builder.Default
+    private String lifecycleStatus = "ACTIVE";
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookingEntity> bookings;
 

@@ -72,14 +72,13 @@ public class SignUpService {
         return userRepository.save(usere) ;
 
     }
-    public void updateUser(UserEntity User) {
-        userRepository.save(User);
-    }
+
 
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
     public UserEntity updateUser(SignUpDto request) {
 
         UserEntity user = getUserById(request.getId());
@@ -104,8 +103,8 @@ public class SignUpService {
         user.setPhoneNumber(request.getPhoneNumber());
 
         // Only update password if a new one was provided
-        if (request.getPassword() != null && !request.getPassword().isBlank())
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getPassword() != null && !request.getPassword().isBlank()){
+            user.setPassword(passwordEncoder.encode(request.getPassword()));}
 
         return userRepository.save(user);
     }

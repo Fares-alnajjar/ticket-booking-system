@@ -34,6 +34,7 @@
               <th class="text-center">Event Name</th>
               <th class="text-center">Date</th>
               <th class="text-center">Time</th>
+              <th class="text-center">Duration</th>
               <th class="text-center">Venue</th>
               <th class="text-center">Ticket Details</th>
               <th class="text-center">Status</th>
@@ -47,6 +48,7 @@
               <td class="text-center" th:text="${event.eventName}">Football Match</td>
               <td class="text-center" th:text="${event.eventDate}">2024-05-15</td>
               <td class="text-center" th:text="${event.eventTime}">20:00</td>
+              <td class="text-center"><span th:text="${@eventScheduleService.getDurationMinutes(event)}">120</span> min</td>
               <td class="text-center" th:text="${event.location}">Football Stadium</td>
               <td class="text-center">
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#ticketDetailsModal"
@@ -62,7 +64,10 @@
                 </button>
               </td>
 
-              <td class="text-center"><span class="badge bg-success">Active</span></td>
+              <td class="text-center">
+                <span th:class="${@eventScheduleService.adminStatusBadgeClass(event)}"
+                      th:text="${@eventScheduleService.adminStatusLabel(event)}">Scheduled</span>
+              </td>
               <td class="text-center">
                 <a th:href="@{/admin/edit-event/{id}(id=${event.id})}" class="btn btn-sm btn-outline-primary me-1">
                   <i class="bi bi-pencil"></i>
