@@ -20,6 +20,11 @@
 
 
   <div class="container mb-6">
+    <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
+<!--    <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>-->
+    <script>
+      setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
+    </script>
 
     <form class="login_form" method="post" th:action="@{/sign_in}">
       <div class="mb-3 rounded p-5 " >
@@ -34,6 +39,11 @@
         <input type="password" class="form-control mb-3" id="Password" name="Password">
         
         <button type="submit" class="btn btn-primary w-100">Sign In</button>
+        
+        <div class="text-center mt-3">
+          <span>Don't have an account? </span>
+          <a href="/sign_up" class="text-primary text-decoration-none">Sign up</a>
+        </div>
       </div>
 
 

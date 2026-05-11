@@ -20,6 +20,11 @@
 <th:block th:replace="header :: page_cart"></th:block>
 
 <div class="container mb-5 mb-5">
+  <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
+<!--  <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>-->
+  <script>
+    setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
+  </script>
 
   <form class="login_form " action="/sign_up" method="post">
     <div class="mb-3 rounded p-5 " >
@@ -44,6 +49,11 @@
       <input type="password" class="form-control mb-3" id="exampleFormControlInput7" name="conPass">
         <div th:if="${errorMessage}" style="color:red;" th:text="${errorMessage}"></div>
       <button type="submit" class="btn btn-primary w-100">Register</button>
+      
+      <div class="text-center mt-3">
+        <span>Already have an account? </span>
+        <a href="/sign_in" class="text-primary text-decoration-none">Sign in</a>
+      </div>
     </div>
 
 
