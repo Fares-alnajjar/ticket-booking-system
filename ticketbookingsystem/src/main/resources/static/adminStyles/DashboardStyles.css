@@ -28,11 +28,24 @@
 
 .stats-card .h5 {
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
 
 .stats-card i {
   font-size: 2rem;
   color: rgba(255, 255, 255, 0.7);
+}
+
+.chart-card-sm {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.chart-card-sm .card-body {
+  padding: 1rem;
 }
