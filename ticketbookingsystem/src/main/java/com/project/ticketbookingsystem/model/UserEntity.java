@@ -26,7 +26,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
     @Column(nullable = false,unique = true)
-    private Long nationalId;
+    private String nationalId;
     @Column(nullable = false,unique = true)
     private String phoneNumber;
 

@@ -29,10 +29,12 @@ public class UpdateProfileDto {
     @Size(min = 0)
     private String password;
 
-    @NotNull(message = "National ID is required")
-    @Min(value = 10000000000000L, message = "National ID must be exactly 14 digits")
-    @Max(value = 99999999999999L, message = "National ID must be exactly 14 digits")
-    private Long nationalId;
+    @NotBlank(message = "National ID is required")
+    @Pattern(
+            regexp = "\\d{14}",
+            message = "National ID must be exactly 14 digits"
+    )
+    private String nationalId;
 
     @NotBlank(message = "Phone number is required")
 

@@ -26,9 +26,12 @@ public class SignUpDto {
             message = "Password must be at least 6 characters")
     private String password;
 
-    @NotNull(message = "National ID is required")
-    @Digits(integer = 14, fraction = 0, message = "National ID must be a valid number")
-    private Long nationalId;
+    @NotBlank(message = "National ID is required")
+    @Pattern(
+            regexp = "\\d{14}",
+            message = "National ID must be exactly 14 digits"
+    )
+    private String nationalId;
 
     @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "\\d{11}", message = "Phone number must be exactly 11 digits")
