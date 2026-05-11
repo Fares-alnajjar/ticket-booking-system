@@ -111,9 +111,6 @@ public class EventScheduleService {
      * Shown to the user for a purchased ticket: Expired after event end, otherwise Confirmed.
      */
     public String getTicketLifecycleDisplay(BookingEntity booking) {
-        if ("EXPIRED".equalsIgnoreCase(booking.getTicketLifecycleStatus())) {
-            return "Expired";
-        }
         if (booking.getTicket() != null && booking.getTicket().getEvent() != null
                 && isEventFinished(booking.getTicket().getEvent())) {
             return "Expired";
