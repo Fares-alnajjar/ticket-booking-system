@@ -63,6 +63,14 @@ public class AdminController {
         model.addAttribute("totalTickets",bookingService.getTotalTicketCount());
 
         model.addAttribute("totalRevenue",paymentService.getTotalRevenue());
+
+        model.addAttribute("footballRevenue",paymentService.getFootballRevenue());
+
+        model.addAttribute("basketballRevenue",paymentService.getBasketballRevenue());
+
+        model.addAttribute("handballRevenue",paymentService.getHandballRevenue());
+
+        model.addAttribute("othersRevenue",paymentService.getOthersRevenue());
         return "Admin/Admin";
     }
 
