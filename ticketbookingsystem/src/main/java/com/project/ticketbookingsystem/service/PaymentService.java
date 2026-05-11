@@ -3,6 +3,7 @@ package com.project.ticketbookingsystem.service;
 import com.project.ticketbookingsystem.model.BookingEntity;
 import com.project.ticketbookingsystem.model.PaymentEntity;
 import com.project.ticketbookingsystem.repository.PaymentRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,9 +15,11 @@ import java.util.List;
 @Service
 public class PaymentService {
     private final PaymentRepository paymentRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public PaymentService(PaymentRepository paymentRepository) {
+    public PaymentService(PaymentRepository paymentRepository, PasswordEncoder passwordEncoder) {
         this.paymentRepository = paymentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void validatePaymentData(String cardHolderName, String cardNumber, String expiryDate, String cvv) {
@@ -43,13 +46,14 @@ public class PaymentService {
                                        String expiryDate,
                                        String cvv) {
         String digitsOnlyCard = cardNumber.replaceAll("\\s+", "");
+        String encodedCardNumber = passwordEncoder.encode(digitsOnlyCard);
         for (BookingEntity booking : bookings) {
             PaymentEntity payment = PaymentEntity.builder()
                     .booking(booking)
                     .amount(booking.getTicket().getPrice())
                     .method("CARD")
                     .cardHolderName(cardHolderName.trim())
-                    .cardNumber(digitsOnlyCard)
+                    .cardNumber(encodedCardNumber)
                     .expiryDate(expiryDate)
                     .cvv(cvv)
                     .status("SUCCESS")
