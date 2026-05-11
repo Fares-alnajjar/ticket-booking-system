@@ -79,7 +79,7 @@ public class SignUpService {
         userRepository.deleteById(id);
     }
 
-    public UserEntity updateUser(SignUpDto request) {
+    public void updateUser(SignUpDto request) {
 
         UserEntity user = getUserById(request.getId());
 
@@ -106,7 +106,7 @@ public class SignUpService {
         if (request.getPassword() != null && !request.getPassword().isBlank()){
             user.setPassword(passwordEncoder.encode(request.getPassword()));}
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
     // used to tell how many Users in admin page
     public long getTotalUsers() {

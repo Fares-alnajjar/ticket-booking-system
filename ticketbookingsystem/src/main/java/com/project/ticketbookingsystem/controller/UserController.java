@@ -36,7 +36,7 @@ public class UserController {
 
     @PostMapping("/profile/update")
     public String updateProfile(
-            @Valid @ModelAttribute("updateProfileDto") SignUpDto dto,
+            @Valid @ModelAttribute("user") SignUpDto request,
             BindingResult bindingResult,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -48,15 +48,16 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.SignUpDto", bindingResult);
-            redirectAttributes.addFlashAttribute("updateProfileDto", dto);
+                    "org.springframework.validation.BindingResult.user",
+                    bindingResult);
+            redirectAttributes.addFlashAttribute("user", request);
             return "redirect:/user/profile";
         }
 
         try {
             // set the current user's id so service knows which user to update
-            dto.setId(user.getId());
-            signUpService.updateUser(dto);  // ← uses the overload with duplicate checks
+            request.setId(user.getId());
+            signUpService.updateUser(request);
 
             // refresh session with updated user
             UserEntity updatedUser = signUpService.getUserById(user.getId());
@@ -66,7 +67,7 @@ public class UserController {
 
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            redirectAttributes.addFlashAttribute("updateProfileDto", dto);
+            redirectAttributes.addFlashAttribute("user", request);
         }
         return "redirect:/user/profile";
     }

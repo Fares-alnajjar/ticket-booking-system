@@ -21,7 +21,9 @@ public class SignUpDto {
     @NotBlank(message = "Email is required")
     private String email;
 
-    @Size(min = 6, message = "Password must be at least 6 characters")
+    @Pattern(
+            regexp = "^$|.{6,}",
+            message = "Password must be at least 6 characters")
     private String password;
 
     @NotNull(message = "National ID is required")
