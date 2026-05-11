@@ -1,6 +1,7 @@
 package com.project.ticketbookingsystem.service;
 
 import com.project.ticketbookingsystem.model.BookingEntity;
+import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.model.PaymentEntity;
 import com.project.ticketbookingsystem.repository.PaymentRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -105,5 +106,38 @@ public class PaymentService {
             totalRev =totalRev + ticket.getAmount();
         }
         return totalRev;
+    }
+
+
+
+    private double calculateRevenueForCategory(List<PaymentEntity> payments, EventEntity.Category targetCategory) {
+        double revenue = 0.0;
+        for (PaymentEntity payment : payments) {
+            EventEntity.Category category = payment.getBooking().getTicket().getEvent().getCategory();
+            if (category == targetCategory) {
+                revenue += payment.getAmount();
+            }
+        }
+        return revenue;
+    }
+
+    public double getFootballRevenue() {
+        List<PaymentEntity> payments = paymentRepository.findAll();
+        return calculateRevenueForCategory(payments, EventEntity.Category.FOOTBALL);
+    }
+
+    public double getBasketballRevenue() {
+        List<PaymentEntity> payments = paymentRepository.findAll();
+        return calculateRevenueForCategory(payments, EventEntity.Category.BASKETBALL);
+    }
+
+    public double getHandballRevenue() {
+        List<PaymentEntity> payments = paymentRepository.findAll();
+        return calculateRevenueForCategory(payments, EventEntity.Category.HANDBALL);
+    }
+
+    public double getOthersRevenue() {
+        List<PaymentEntity> payments = paymentRepository.findAll();
+        return calculateRevenueForCategory(payments, EventEntity.Category.OTHERS);
     }
 }
