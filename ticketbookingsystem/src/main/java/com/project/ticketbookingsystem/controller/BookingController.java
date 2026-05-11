@@ -31,4 +31,33 @@ public class BookingController {
         }
         return "redirect:/events/booking/" + eventId;
     }
+    @PostMapping("/booking/cart/update")
+    public String updateCartItem(@RequestParam("eventId") Long eventId,
+                                 @RequestParam("oldTicketType") String oldTicketType,
+                                 @RequestParam("newTicketType") String newTicketType,
+                                 @RequestParam("newQuantity") Integer newQuantity,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            bookingService.updateCartItem(session, eventId, oldTicketType, newTicketType, newQuantity);
+            redirectAttributes.addFlashAttribute("successMessage", "Cart item updated.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        }
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/booking/cart/remove")
+    public String removeCartItem(@RequestParam("eventId") Long eventId,
+                                 @RequestParam("oldTicketType") String oldTicketType,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            bookingService.removeCartItem(session, eventId, oldTicketType);
+            redirectAttributes.addFlashAttribute("successMessage", "Item removed from cart.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        }
+        return "redirect:/cart";
+    }
 }
