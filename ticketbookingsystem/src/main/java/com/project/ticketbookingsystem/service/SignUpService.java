@@ -80,7 +80,35 @@ public class SignUpService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+    public UserEntity updateUser(SignUpDto request) {
 
+        UserEntity user = getUserById(request.getId());
+
+        // ── Duplicate checks (exclude current user) ───────────
+        if (!user.getEmail().equals(request.getEmail()) &&
+                userRepository.existsByEmail(request.getEmail()))
+            throw new IllegalArgumentException("Email already in use");
+
+        if (!user.getNationalId().equals(request.getNationalId()) &&
+                userRepository.existsByNationalId(request.getNationalId()))
+            throw new IllegalArgumentException("National ID already in use");
+
+        if (!user.getPhoneNumber().equals(request.getPhoneNumber()) &&
+                userRepository.existsByPhoneNumber(request.getPhoneNumber()))
+            throw new IllegalArgumentException("Phone number already in use");
+
+        // Update fields
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setNationalId(request.getNationalId());
+        user.setPhoneNumber(request.getPhoneNumber());
+
+        // Only update password if a new one was provided
+        if (request.getPassword() != null && !request.getPassword().isBlank())
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return userRepository.save(user);
+    }
     // used to tell how many Users in admin page
     public long getTotalUsers() {
         return userRepository.count();
