@@ -28,7 +28,7 @@ public class TicketEntity {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private EventEntity event;
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookingEntity> bookings;
 
 }

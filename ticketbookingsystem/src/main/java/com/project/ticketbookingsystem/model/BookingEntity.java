@@ -30,6 +30,6 @@ public class BookingEntity {
     @ManyToOne
     @JoinColumn(name="ticket_id",nullable = false)
     private TicketEntity ticket;
-    @OneToOne(mappedBy = "booking")
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private PaymentEntity payment;
 }
