@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -23,6 +22,7 @@ import java.util.Optional;
 public class BookingService {
     private static final String CART_SESSION_KEY = "CART_ITEMS";
     private static final String CURRENT_USER_ID_SESSION_KEY = "CURRENT_USER_ID";
+    private static final String LOGGED_IN_USER_SESSION_KEY = "loggedInUser";
 
     private final EventRepository eventRepository;
     private final TicketRepository ticketRepository;
@@ -110,7 +110,16 @@ public class BookingService {
     }
 
     public UserEntity resolveCurrentUser(HttpSession session, Long userId) {
-        Long activeUserId = userId;
+        Long activeUserId = null;
+
+        Object loggedInUserObj = session.getAttribute(LOGGED_IN_USER_SESSION_KEY);
+        if (loggedInUserObj instanceof UserEntity loggedInUser) {
+            activeUserId = loggedInUser.getId();
+            if (userId != null && !userId.equals(activeUserId)) {
+                throw new IllegalArgumentException("User id does not match the signed-in account.");
+            }
+        }
+
         if (activeUserId == null) {
             Object userSessionObject = session.getAttribute(CURRENT_USER_ID_SESSION_KEY);
             if (userSessionObject instanceof Long id) {
@@ -119,10 +128,11 @@ public class BookingService {
         }
 
         if (activeUserId == null) {
-            activeUserId = userRepository.findAll().stream()
-                    .min(Comparator.comparing(UserEntity::getId))
-                    .map(UserEntity::getId)
-                    .orElseThrow(() -> new IllegalArgumentException("No users found. Please sign up first before booking."));
+            activeUserId = userId;
+        }
+
+        if (activeUserId == null) {
+            throw new IllegalArgumentException("Please sign in first.");
         }
 
         Long resolvedUserId = activeUserId;
@@ -130,6 +140,7 @@ public class BookingService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + resolvedUserId));
 
         session.setAttribute(CURRENT_USER_ID_SESSION_KEY, user.getId());
+        session.setAttribute(LOGGED_IN_USER_SESSION_KEY, user);
         return user;
     }
 

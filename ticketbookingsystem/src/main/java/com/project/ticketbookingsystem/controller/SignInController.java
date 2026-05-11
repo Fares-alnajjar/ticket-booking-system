@@ -53,6 +53,7 @@ public class SignInController {
 
             UserEntity user = signInService.handlingSignIn(request);
             session.setAttribute("loggedInUser", user);
+            session.setAttribute("CURRENT_USER_ID", user.getId());
 //            redirectAttributes.addFlashAttribute("successMessage",
 //                    "Welcome back, " + user.getName() + "! You have signed in successfully.");
 //            return "redirect:/events";
