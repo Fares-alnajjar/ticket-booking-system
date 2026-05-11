@@ -264,26 +264,4 @@ public class AdminController {
 
     }
 
-    // ── GET /admin/manage-tickets ──────────────────────────────────────────────
-    @GetMapping("/manage-tickets")
-    public String getManageTicketsPage(Model model) {
-        model.addAttribute("tickets", bookingService.getAllTickets());
-        return "Admin/manage-tickets";
-    }
-
-    //DELETE TICKET
-    @PostMapping("/delete-ticket/{id}")
-    public String deleteTicket(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            TicketEntity ticket = bookingService.getTicketById(id);
-            String name = ticket.getType();
-            bookingService.deleteTicket(id);
-            redirectAttributes.addFlashAttribute("success", "Ticket \"" + name + "\" deleted successfully.");
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", "Ticket not found.");
-        }
-        return "redirect:/admin/manage-tickets";
-    }
-
-
 }

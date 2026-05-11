@@ -78,6 +78,7 @@ public class SignUpService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
     public UserEntity updateUser(SignUpDto request) {
 
         UserEntity user = getUserById(request.getId());
