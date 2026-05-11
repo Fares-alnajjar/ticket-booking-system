@@ -65,7 +65,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Revenue</div>
-                      <div class="h5 mb-0 font-weight-bold">$<span th:text="${totalRevenue}">0.0</span></div>
+                      <div class="h5 mb-0 font-weight-bold">$<span th:text="${#numbers.formatDecimal(totalRevenue, 1, 0)}">0</span></div>
                     </div>
                   </div>
                 </div>
