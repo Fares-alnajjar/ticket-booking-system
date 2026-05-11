@@ -28,7 +28,7 @@ public class SignUpDto {
     @Digits(integer = 14, fraction = 0, message = "National ID must be a valid number")
     private Long nationalId;
 
-    @NotNull(message = "Phone number is required")
+    @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "\\d{11}", message = "Phone number must be exactly 11 digits")
     private String phoneNumber;
 }
