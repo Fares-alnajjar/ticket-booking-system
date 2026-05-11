@@ -7,6 +7,7 @@ import com.project.ticketbookingsystem.model.TicketEntity;
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.service.BookingService;
 import com.project.ticketbookingsystem.service.EventService;
+import com.project.ticketbookingsystem.service.PaymentService;
 import com.project.ticketbookingsystem.service.SignUpService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,13 @@ public class AdminController {
     private final EventService eventService;
     private final SignUpService signUpService;
     private final BookingService bookingService;
+    private final PaymentService paymentService;
 
-    public AdminController(EventService eventService, SignUpService signUpService, BookingService bookingService) {
+    public AdminController(EventService eventService,PaymentService paymentService, SignUpService signUpService, BookingService bookingService) {
         this.eventService = eventService;
         this.signUpService = signUpService;
         this.bookingService = bookingService;
+        this.paymentService=paymentService;
     }
 
     private void mapRequestToEntity(EventRequest request, EventEntity event) {
@@ -59,7 +62,7 @@ public class AdminController {
 
         model.addAttribute("totalTickets",bookingService.getTotalTicketCount());
 
-        model.addAttribute("totalRevenue",bookingService.getTotalRevenue());
+        model.addAttribute("totalRevenue",paymentService.getTotalRevenue());
         return "Admin/Admin";
     }
 

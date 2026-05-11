@@ -97,4 +97,13 @@ public class PaymentService {
             return false;
         }
     }
+
+    public double getTotalRevenue() {
+        List<PaymentEntity> tickets = paymentRepository.findAll();
+        double totalRev = 0;
+        for (PaymentEntity ticket : tickets) {
+            totalRev =totalRev + ticket.getAmount();
+        }
+        return totalRev;
+    }
 }

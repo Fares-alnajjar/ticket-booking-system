@@ -1,14 +1,8 @@
 package com.project.ticketbookingsystem.service;
 
 import com.project.ticketbookingsystem.dto.CartItemDto;
-import com.project.ticketbookingsystem.model.BookingEntity;
-import com.project.ticketbookingsystem.model.EventEntity;
-import com.project.ticketbookingsystem.model.TicketEntity;
-import com.project.ticketbookingsystem.model.UserEntity;
-import com.project.ticketbookingsystem.repository.BookingRepository;
-import com.project.ticketbookingsystem.repository.EventRepository;
-import com.project.ticketbookingsystem.repository.TicketRepository;
-import com.project.ticketbookingsystem.repository.UserRepository;
+import com.project.ticketbookingsystem.model.*;
+import com.project.ticketbookingsystem.repository.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
@@ -28,15 +22,18 @@ public class BookingService {
     private final TicketRepository ticketRepository;
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
 
     public BookingService(EventRepository eventRepository,
                           TicketRepository ticketRepository,
                           BookingRepository bookingRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          PaymentRepository paymentRepository) {
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
+        this.paymentRepository=paymentRepository;
     }
 
     public EventEntity getEventById(Long eventId) {
@@ -248,16 +245,7 @@ public class BookingService {
 
     //used in admin controller
     public long getTotalTicketCount() {
-        return ticketRepository.count();
-    }
-
-    public double getTotalRevenue() {
-        List<TicketEntity> tickets = ticketRepository.findAll();
-        double totalRev = 0;
-        for (TicketEntity ticket : tickets) {
-            totalRev =totalRev + ticket.getPrice();
-        }
-        return totalRev;
+        return bookingRepository.count();
     }
 
     public List<TicketEntity> getAllTickets() {
@@ -274,6 +262,9 @@ public class BookingService {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket not found with id: " + id));
     }
+
+
+
     public void updateCartItem(HttpSession session, Long eventId, String oldTicketType, String newTicketType, Integer newQuantity) {
         String normalizedOld = normalizeTicketType(oldTicketType);
         String normalizedNew = normalizeTicketType(newTicketType);
