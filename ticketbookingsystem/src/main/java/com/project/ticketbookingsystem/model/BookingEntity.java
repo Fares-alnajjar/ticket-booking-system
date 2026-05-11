@@ -22,6 +22,12 @@ public class BookingEntity {
    private LocalDateTime bookingTime=LocalDateTime.now();
 @Column(nullable = false)
     private String status; // confirmed or cancelled
+
+    /** CONFIRMED after purchase; EXPIRED once the event end time has passed (updated when My Tickets is loaded). */
+    @Column(length = 32)
+    @Builder.Default
+    private String ticketLifecycleStatus = "CONFIRMED";
+
     // no quantity for now
     // relations between this table and other tables
     @ManyToOne

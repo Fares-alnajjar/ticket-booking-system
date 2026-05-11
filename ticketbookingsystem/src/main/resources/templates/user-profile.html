@@ -18,98 +18,103 @@
 </head>
 <body>
 
-  <nav th:replace="header :: page_navbar"></nav>
-  <link rel="stylesheet" href="/home_styles.css">
-  <link rel="stylesheet" th:href="@{/profileStyles.css}">
+<nav th:replace="header :: page_navbar"></nav>
+<link rel="stylesheet" href="/home_styles.css">
 
-  <th:block th:replace="header :: page_cart"></th:block>
+<th:block th:replace="header :: page_cart"></th:block>
 
-  <div class="profile-container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <div class="card shadow">
-          <div class="card-header bg-primary text-white">
-            <h3 class="mb-0" th:text="${user.name} + ' Profile'">User Profile</h3>
-          </div>
-          <div class="card-body">
-            <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
-            <form th:action="@{/user/profile/update}" method="post" th:object="${user}">
-              
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="name" class="form-label">Name</label>
-                  <input type="text" class="form-control" id="name" th:field="*{name}" required>
-                </div>
-                <div class="col-md-6">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" th:field="*{email}" readonly>
-                </div>
-              </div>
+<div class="container mt-5">
 
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="nationalId" class="form-label">National ID</label>
-                  <input type="text" class="form-control" id="nationalId" th:field="*{nationalId}" readonly>
-                </div>
-                <div class="col-md-6">
-                  <label for="phoneNumber" class="form-label">Phone Number</label>
-                  <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" required>
-                </div>
-              </div>
+  <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
+  <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
+  <script>
+    setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
+  </script>
 
-              <div class="mb-3 col-md-6">
-                  <label for="createdAt" class="form-label">Member Since</label>
-                  <input type="text" class="form-control" id="createdAt" th:value="${#temporals.format(user.createdAt, 'MMMM dd, yyyy')}" readonly>
-                </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter new password to change">
-              </div>
-
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="/" class="btn btn-secondary me-md-2">Cancel</a>
-                <button type="submit" class="btn btn-primary update-profile-btn">Update Profile</button>
-              </div>
-
-            </form>
-          </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0" th:text="${user.name} + ' Profile'">User Profile</h3>
         </div>
+        <div class="card-body">
+          <form th:action="@{/user/profile/update}" method="post" th:object="${user}">
 
-<!--        &lt;!&ndash; Booking History Section &ndash;&gt;-->
-<!--        <div class="card shadow mt-4" th:if="${user.bookings != null and !user.bookings.empty}">-->
-<!--          <div class="card-header bg-primary text-white">-->
-<!--            <h4 class="mb-0">Booking History</h4>-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            <div class="table-responsive">-->
-<!--              <table class="table table-striped">-->
-<!--                <thead>-->
-<!--                  <tr>-->
-<!--                    <th>Event</th>-->
-<!--                    <th>Date</th>-->
-<!--                    <th>Seats</th>-->
-<!--                    <th>Status</th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                  <tr th:each="booking : ${user.bookings}">-->
-<!--                    <td th:text="${booking.event?.name}">Event Name</td>-->
-<!--                    <td th:text="${#temporals.format(booking.bookingDate, 'MMM dd, yyyy')}">Date</td>-->
-<!--                    <td th:text="${booking.numberOfSeats}">Seats</td>-->
-<!--                    <td>-->
-<!--                      <span class="badge bg-success" th:text="${booking.status}">Confirmed</span>-->
-<!--                    </td>-->
-<!--                  </tr>-->
-<!--                </tbody>-->
-<!--              </table>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" required>
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" th:field="*{email}">
+              </div>
+            </div>
 
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="nationalId" class="form-label">National ID</label>
+                <input type="text" class="form-control" id="nationalId" th:field="*{nationalId}" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" required>
+              </div>
+            </div>
+
+            <div class="mb-3 col-md-6">
+              <label for="createdAt" class="form-label">Member Since</label>
+              <input type="text" class="form-control" id="createdAt" th:value="${#temporals.format(user.createdAt, 'MMMM dd, yyyy')}" readonly>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter new password to change">
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/" class="btn btn-secondary me-md-2">Cancel</a>
+              <button type="submit" class="btn btn-primary">Update Profile</button>
+            </div>
+
+          </form>
+        </div>
       </div>
+
+      <!--        &lt;!&ndash; Booking History Section &ndash;&gt;-->
+      <!--        <div class="card shadow mt-4" th:if="${user.bookings != null and !user.bookings.empty}">-->
+      <!--          <div class="card-header bg-primary text-white">-->
+      <!--            <h4 class="mb-0">Booking History</h4>-->
+      <!--          </div>-->
+      <!--          <div class="card-body">-->
+      <!--            <div class="table-responsive">-->
+      <!--              <table class="table table-striped">-->
+      <!--                <thead>-->
+      <!--                  <tr>-->
+      <!--                    <th>Event</th>-->
+      <!--                    <th>Date</th>-->
+      <!--                    <th>Seats</th>-->
+      <!--                    <th>Status</th>-->
+      <!--                  </tr>-->
+      <!--                </thead>-->
+      <!--                <tbody>-->
+      <!--                  <tr th:each="booking : ${user.bookings}">-->
+      <!--                    <td th:text="${booking.event?.name}">Event Name</td>-->
+      <!--                    <td th:text="${#temporals.format(booking.bookingDate, 'MMM dd, yyyy')}">Date</td>-->
+      <!--                    <td th:text="${booking.numberOfSeats}">Seats</td>-->
+      <!--                    <td>-->
+      <!--                      <span class="badge bg-success" th:text="${booking.status}">Confirmed</span>-->
+      <!--                    </td>-->
+      <!--                  </tr>-->
+      <!--                </tbody>-->
+      <!--              </table>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+
     </div>
   </div>
+</div>
 
 </body>
 </html>

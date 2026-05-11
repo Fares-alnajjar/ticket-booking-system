@@ -23,17 +23,20 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final PaymentRepository paymentRepository;
+    private final EventScheduleService eventScheduleService;
 
     public BookingService(EventRepository eventRepository,
                           TicketRepository ticketRepository,
                           BookingRepository bookingRepository,
                           UserRepository userRepository,
-                          PaymentRepository paymentRepository) {
+                          PaymentRepository paymentRepository,
+                          EventScheduleService eventScheduleService) {
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.paymentRepository=paymentRepository;
+        this.eventScheduleService = eventScheduleService;
     }
 
     public EventEntity getEventById(Long eventId) {
@@ -43,6 +46,7 @@ public class BookingService {
 
     public void addToCart(HttpSession session, Long eventId, String ticketType, Integer quantity) {
         EventEntity event = getEventById(eventId);
+        requireBookingAllowed(event);
         int requestedQuantity = validateQuantity(event, quantity);
         String normalizedType = normalizeTicketType(ticketType);
         int availableSeats = getAvailableSeats(event, normalizedType);
@@ -151,6 +155,7 @@ public class BookingService {
 
         for (CartItemDto item : cartItems) {
             EventEntity event = getEventById(item.getEventId());
+            requireBookingAllowed(event);
             String normalizedType = normalizeTicketType(item.getTicketType());
             int availableSeats = getAvailableSeats(event, normalizedType);
 
@@ -169,6 +174,7 @@ public class BookingService {
                 BookingEntity booking = BookingEntity.builder()
                         .bookingTime(LocalDateTime.now())
                         .status("CONFIRMED")
+                        .ticketLifecycleStatus("CONFIRMED")
                         .user(user)
                         .ticket(ticket)
                         .build();
@@ -181,7 +187,40 @@ public class BookingService {
     }
 
     public List<BookingEntity> getUserBookings(Long userId) {
-        return bookingRepository.findByUserIdOrderByBookingTimeDesc(userId);
+        List<BookingEntity> list = bookingRepository.findByUserIdOrderByBookingTimeDesc(userId);
+        for (BookingEntity booking : list) {
+            syncTicketLifecycleStatus(booking);
+        }
+        return list;
+    }
+
+    private void syncTicketLifecycleStatus(BookingEntity booking) {
+        if (booking.getTicket() == null || booking.getTicket().getEvent() == null) {
+            return;
+        }
+        TicketEntity ticket = booking.getTicket();
+        EventEntity event = ticket.getEvent();
+        if (eventScheduleService.isEventFinished(event)) {
+            boolean dirty = false;
+            if (!"EXPIRED".equals(booking.getTicketLifecycleStatus())) {
+                booking.setTicketLifecycleStatus("EXPIRED");
+                dirty = true;
+            }
+            if (!"EXPIRED".equals(ticket.getLifecycleStatus())) {
+                ticket.setLifecycleStatus("EXPIRED");
+                dirty = true;
+            }
+            if (dirty) {
+                bookingRepository.save(booking);
+                ticketRepository.save(ticket);
+            }
+        }
+    }
+
+    private void requireBookingAllowed(EventEntity event) {
+        if (!eventScheduleService.isOpenForBooking(event)) {
+            throw new IllegalArgumentException(eventScheduleService.getBookingClosedMessage(event));
+        }
     }
 
     private int validateQuantity(EventEntity event, Integer quantity) {
@@ -240,6 +279,7 @@ public class BookingService {
                         .type(ticketType)
                         .price(price)
                         .availableSeats(availableSeats)
+                        .lifecycleStatus("ACTIVE")
                         .build());
     }
 
@@ -273,6 +313,7 @@ public class BookingService {
         }
 
         EventEntity event = getEventById(eventId);
+        requireBookingAllowed(event);
         if (newQuantity > event.getTicketsPerUser()) {
             throw new IllegalArgumentException("Maximum tickets per user is " + event.getTicketsPerUser() + " for this event.");
         }

@@ -50,6 +50,7 @@ public class AdminController {
         event.setStandardCapacity(request.getStandardCapacity());
         event.setImageUrl(request.getImageUrl());
         event.setTicketsPerUser(request.getTicketsPerUser());
+        event.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : 60);
     }
 
     // ── GET /admin ────────────────────────────────────────────────────────────
@@ -141,6 +142,7 @@ public class AdminController {
             request.setStandardCapacity(event.getStandardCapacity());
             request.setImageUrl(event.getImageUrl());
             request.setTicketsPerUser(event.getTicketsPerUser());
+            request.setDurationMinutes(event.getDurationMinutes() != null ? event.getDurationMinutes() : 60);
 
             model.addAttribute("event", request);
             return "Admin/edit-event";
@@ -244,28 +246,22 @@ public class AdminController {
         if (result.hasErrors()) {
             String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
             model.addAttribute("error", errorMsg);
-            model.addAttribute("user", request);
+            model.addAttribute("event", request);
             return "Admin/edit-user";
         }
         try {
-            UserEntity user = signUpService.getUserById(request.getId());
-
-            user.setName(request.getName());
-            user.setEmail(request.getEmail());
-            user.setPassword(request.getPassword());
-            user.setNationalId(request.getNationalId());
-            user.setPhoneNumber(request.getPhoneNumber());
-
-            signUpService.updateUser(user);
+            signUpService.updateUser(request);
 
             redirectAttributes.addFlashAttribute("success",
-                    "User \"" + request.getName() + "\" updated successfully!");
+                    "Event \"" + request.getName() + "\" updated successfully!");
             return "redirect:/admin/manage-users";
 
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", "User not found.");
+            redirectAttributes.addFlashAttribute("error", "Event not found.");
             return "redirect:/admin/manage-users";
         }
+
+
     }
 
     // ── GET /admin/manage-tickets ──────────────────────────────────────────────
