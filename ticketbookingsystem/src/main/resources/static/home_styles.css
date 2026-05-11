@@ -3,6 +3,80 @@
   padding: 0;
 }
 
+.head-section {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: url('https://i.ibb.co/TBvCXpKH/vienna-reyes-q-Cr-KTET-09o-unsplash.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.head-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 50px;
+  color: white;
+}
+
+.head-left {
+  flex: 1;
+  max-width: 600px;
+}
+
+.head-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.head-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.head-description {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.btn-head {
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #0b192e;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-head:hover {
+  background: #0a1626;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-icon {
+  width: 300px;
+  height: 300px;
+  opacity: 0.4;
+}
+
 h2 {
   text-align: center;
   font-size: 1.9rem;
@@ -22,7 +96,7 @@ h2 {
 
 .category-card {
   position: relative;
-  width: 400px;
+  width: 310px;
   height: 200px;
   border-radius: 12px;
   overflow: hidden;
@@ -34,6 +108,12 @@ h2 {
 .category-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+.category-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
 }
 
 .category-card img {

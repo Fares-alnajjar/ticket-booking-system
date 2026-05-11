@@ -21,7 +21,7 @@
 
 <div class="container mb-5 mb-5">
   <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
-<!--  <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>-->
+  <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
   <script>
     setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
   </script>

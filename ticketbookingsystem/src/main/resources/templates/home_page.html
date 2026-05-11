@@ -21,44 +21,68 @@
 <body>
 
   <nav th:replace="header :: page_navbar"></nav>
-  <link rel="stylesheet" href="/home_styles.css">
+
 
 <th:block th:replace="header :: page_cart"></th:block>
 
-  <h2 >Browse by Category</h2>
+  <div class="head-section">
+    <div class="head-content">
+      <div class="head-left">
+        <h1 class="head-title">Welcome to NextSeat</h1>
+        <p class="head-description">Book tickets for football, basketball and handball</p>
+        <a th:href="@{/events}" class="btn btn-head">Browse Events →</a>
+      </div>
+      <div class="head-right">
+      </div>
+    </div>
+  </div>
 
   <div class="container mt-3">
 
+  </div>
+
+
+  <h2 >Browse by Category</h2>
+
+  <div class="container mt-3 mb-5">
+
     <div class="container">
 
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1293&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="football">
-        <div class="label">
-          Football
+      <a href="/events?category=Football" class="category-link">
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1293&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="football">
+          <div class="label">
+            Football
+          </div>
         </div>
-      </div>
+      </a>
 
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1190&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="basketball">
-        <div class="label">
-          Basketball
+      <a href="/events?category=Basketball" class="category-link">
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1190&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="basketball">
+          <div class="label">
+            Basketball
+          </div>
         </div>
-      </div>
+      </a>
 
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1587384474964-3a06ce1ce699?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="handball">
-        <div class="label">
-          Handball
+      <a href="/events?category=Handball" class="category-link">
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1587384474964-3a06ce1ce699?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="handball">
+          <div class="label">
+            Handball
+          </div>
         </div>
-      </div>
+      </a>
 
-
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Other">
-        <div class="label">
-          Others
+      <a href="/events?category=Others" class="category-link">
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Other">
+          <div class="label">
+            Others
+          </div>
         </div>
-      </div>
+      </a>
 
 
 
