@@ -14,16 +14,16 @@
 
   <link rel="stylesheet" href="/home_styles.css">
   <link rel="stylesheet" href="/header_styles.css">
+  <link rel="stylesheet" href="/profileStyles.css">
 
 </head>
 <body>
 
 <nav th:replace="header :: page_navbar"></nav>
-<link rel="stylesheet" href="/home_styles.css">
 
 <th:block th:replace="header :: page_cart"></th:block>
 
-<div class="container mt-5">
+<div class="container profile-page py-4 mt-4">
 
   <div th:if="${successMessage}" class="alert alert-success w-100" th:text="${successMessage}"></div>
   <div th:if="${errorMessage}" class="alert alert-danger w-100" th:text="${errorMessage}"></div>
@@ -31,10 +31,10 @@
     setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
   </script>
 
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
+  <div class="profile-container">
+    <div class="col-12 col-md-10 col-xl-10">
+      <div class="card shadow profile-card">
+        <div class="card-header bg-primary text-white profile-card-header">
           <h3 class="mb-0" th:text="${user.name} + ' Profile'">User Profile</h3>
         </div>
         <div class="card-body">
