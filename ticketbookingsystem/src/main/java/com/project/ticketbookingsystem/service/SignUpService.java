@@ -3,8 +3,10 @@ package com.project.ticketbookingsystem.service;
 import com.project.ticketbookingsystem.dto.SignUpDto;
 
 import com.project.ticketbookingsystem.dto.UpdateProfileDto;
+
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -82,33 +84,45 @@ public class SignUpService {
 
     public void updateUser(UpdateProfileDto request) {
 
-        UserEntity user = getUserById(request.getId());
+        UserEntity user = userRepository.findById(request.getId()).get();
 
-        // ── Duplicate checks (exclude current user) ───────────
-        if (!user.getEmail().equals(request.getEmail()) &&
-                userRepository.existsByEmail(request.getEmail()))
-            throw new IllegalArgumentException("Email already in use");
 
-        if (!user.getNationalId().equals(request.getNationalId()) &&
-                userRepository.existsByNationalId(request.getNationalId()))
-            throw new IllegalArgumentException("National ID already in use");
+        // 1. Conditional Duplicate Checks (Only if the value is provided and different)
+        if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(request.getEmail())) {
+                throw new IllegalArgumentException("Email already in use");
+            }
+            user.setEmail(request.getEmail());
+        }
 
-        if (!user.getPhoneNumber().equals(request.getPhoneNumber()) &&
-                userRepository.existsByPhoneNumber(request.getPhoneNumber()))
-            throw new IllegalArgumentException("Phone number already in use");
+        if (request.getNationalId() != null && !request.getNationalId().equals(user.getNationalId())) {
+            if (userRepository.existsByNationalId(request.getNationalId())) {
+                throw new IllegalArgumentException("National ID already in use");
+            }
+            user.setNationalId(request.getNationalId());
+        }
 
-        // Update fields
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setNationalId(request.getNationalId());
-        user.setPhoneNumber(request.getPhoneNumber());
+        if (request.getPhoneNumber() != null && !request.getPhoneNumber().equals(user.getPhoneNumber())) {
+            if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+                throw new IllegalArgumentException("Phone number already in use");
+            }
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
 
-        // Only update password if a new one was provided
-        if (request.getPassword() != null && !request.getPassword().isBlank()){
-            user.setPassword(passwordEncoder.encode(request.getPassword()));}
+        // 2. Update other fields only if they are not null
+        if (request.getName() != null && !request.getName().isBlank()) {
+            user.setName(request.getName());
+        }
+
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
 
         userRepository.save(user);
     }
+
+
     // used to tell how many Users in admin page
     public long getTotalUsers() {
         return userRepository.count();

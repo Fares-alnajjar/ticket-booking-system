@@ -2,7 +2,6 @@ body {
   min-height: 100vh;
 }
 
-/* Page shell: horizontal + vertical center */
 .container.profile-page {
   display: flex;
   flex-direction: column;
@@ -22,7 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-width: 0; /* was 800px — allow narrow viewports */
+  min-width: 0;
 }
 
 .profile-page .card-header.bg-primary,

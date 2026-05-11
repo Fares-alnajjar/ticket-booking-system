@@ -223,7 +223,7 @@ public class AdminController {
             request.setId(user.getId());
             request.setName(user.getName());
             request.setEmail(user.getEmail());
-            request.setPassword(user.getPassword());
+
             request.setNationalId(user.getNationalId());
             request.setPhoneNumber(user.getPhoneNumber());
 

@@ -65,7 +65,11 @@ body {
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
 }
 
@@ -83,6 +87,20 @@ body {
 
 .event-card .card-body {
   padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: none;
+}
+
+.event-card .card-footer {
+  padding: 0px;
+  width: 100%;
+  margin-top: auto;
+  background-color: #ffffff;
+  border none;
+  border-top: none;
 }
 
 .event-card .card-title {

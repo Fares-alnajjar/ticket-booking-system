@@ -42,14 +42,22 @@
 
       <div th:unless="${#lists.isEmpty(bookings)}" class="tickets-list">
         <div class="ticket-card" th:each="booking : ${bookings}">
-          <h3 th:text="${booking.ticket.event.eventName}">Event Name</h3>
-          <p><strong>Type:</strong> <span th:text="${booking.ticket.type}">VIP</span></p>
-          <p><strong>Price:</strong> $<span th:text="${#numbers.formatDecimal(booking.ticket.price, 1, 2)}">0.00</span></p>
-          <p><strong>Date:</strong> <span th:text="${#temporals.format(booking.ticket.event.eventDate, 'MMMM dd, yyyy')}">Date</span></p>
-          <p><strong>Time:</strong> <span th:text="${#temporals.format(booking.ticket.event.eventTime, 'HH:mm')}">Time</span></p>
-          <p><strong>Location:</strong> <span th:text="${booking.ticket.event.location}">Location</span></p>
-          <p><strong>Booking:</strong> <span th:text="${booking.status}">CONFIRMED</span></p>
-          <p><strong>Ticket status:</strong> <span th:text="${@eventScheduleService.getTicketLifecycleDisplay(booking)}">Confirmed</span></p>
+          <div class="ticket-card-header">
+            <h3 th:text="${booking.ticket.event.eventName}">Event Name</h3>
+          </div>
+          <div class="ticket-card-body">
+            <p><strong>Type:</strong> <span class="ticket-type-badge" th:classappend="${#strings.toLowerCase(booking.ticket.type)}" th:text="${booking.ticket.type}">VIP</span></p>
+            <p><strong>Price:</strong> <span class="ticket-price">$<span th:text="${#numbers.formatDecimal(booking.ticket.price, 1, 2)}">0.00</span></span></p>
+            <p><strong>Date:</strong> <span th:text="${#temporals.format(booking.ticket.event.eventDate, 'MMMM dd, yyyy')}">Date</span></p>
+            <p><strong>Time:</strong> <span th:text="${#temporals.format(booking.ticket.event.eventTime, 'HH:mm')}">Time</span></p>
+            <p><strong>Location:</strong> <span th:text="${booking.ticket.event.location}">Location</span></p>
+            <span class="ticket-status"
+                  th:classappend="${#strings.toLowerCase(@eventScheduleService.getTicketLifecycleDisplay(booking))}"
+                  th:text="${@eventScheduleService.getTicketLifecycleDisplay(booking)}">
+                Status
+              </span>
+
+          </div>
         </div>
       </div>
 
