@@ -1,10 +1,7 @@
 package com.project.ticketbookingsystem.dto;
 
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,9 +25,10 @@ public class SignUpDto {
     private String password;
 
     @NotNull(message = "National ID is required")
+    @Digits(integer = 14, fraction = 0, message = "National ID must be a valid number")
     private Long nationalId;
 
     @NotNull(message = "Phone number is required")
-    @Size(min = 11,max=11, message = "must be 11 numbers")
+    @Pattern(regexp = "\\d{11}", message = "Phone number must be exactly 11 digits")
     private String phoneNumber;
 }

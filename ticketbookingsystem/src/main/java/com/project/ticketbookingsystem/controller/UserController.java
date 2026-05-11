@@ -53,15 +53,21 @@ public class UserController {
             return "redirect:/user/profile";
         }
 
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setPassword((dto.getPassword()));
+        try {
+            // set the current user's id so service knows which user to update
+            dto.setId(user.getId());
+            signUpService.updateUser(dto);  // ← uses the overload with duplicate checks
 
+            // refresh session with updated user
+            UserEntity updatedUser = signUpService.getUserById(user.getId());
+            session.setAttribute("loggedInUser", updatedUser);
 
-        signUpService.updateUser(user);
-        session.setAttribute("loggedInUser", user);
-        redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("updateProfileDto", dto);
+        }
         return "redirect:/user/profile";
     }
 }
