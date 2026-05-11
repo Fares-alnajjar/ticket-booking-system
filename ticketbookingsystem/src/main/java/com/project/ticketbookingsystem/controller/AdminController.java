@@ -50,6 +50,7 @@ public class AdminController {
         event.setStandardCapacity(request.getStandardCapacity());
         event.setImageUrl(request.getImageUrl());
         event.setTicketsPerUser(request.getTicketsPerUser());
+        event.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : 60);
     }
 
     // ── GET /admin ────────────────────────────────────────────────────────────
@@ -141,6 +142,7 @@ public class AdminController {
             request.setStandardCapacity(event.getStandardCapacity());
             request.setImageUrl(event.getImageUrl());
             request.setTicketsPerUser(event.getTicketsPerUser());
+            request.setDurationMinutes(event.getDurationMinutes() != null ? event.getDurationMinutes() : 60);
 
             model.addAttribute("event", request);
             return "Admin/edit-event";

@@ -1,8 +1,11 @@
 package com.project.ticketbookingsystem.controller;
 
+import com.project.ticketbookingsystem.dto.CartItemDto;
 import com.project.ticketbookingsystem.model.BookingEntity;
+import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.model.UserEntity;
 import com.project.ticketbookingsystem.service.BookingService;
+import com.project.ticketbookingsystem.service.EventScheduleService;
 import com.project.ticketbookingsystem.service.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -18,10 +21,14 @@ import java.util.List;
 public class PaymentController {
     private final BookingService bookingService;
     private final PaymentService paymentService;
+    private final EventScheduleService eventScheduleService;
 
-    public PaymentController(BookingService bookingService, PaymentService paymentService) {
+    public PaymentController(BookingService bookingService,
+                             PaymentService paymentService,
+                             EventScheduleService eventScheduleService) {
         this.bookingService = bookingService;
         this.paymentService = paymentService;
+        this.eventScheduleService = eventScheduleService;
     }
 
     @GetMapping("/payment")
@@ -35,6 +42,7 @@ public class PaymentController {
                 redirectAttributes.addFlashAttribute("errorMessage", "Your cart is empty. Add tickets first.");
                 return "redirect:/events";
             }
+            assertCartStillBookable(session);
             model.addAttribute("currentUserId", user.getId());
             model.addAttribute("cartItems", bookingService.getCartItems(session));
             model.addAttribute("cartTotal", bookingService.getCartTotal(session));
@@ -55,6 +63,7 @@ public class PaymentController {
                          RedirectAttributes redirectAttributes) {
         try {
             UserEntity user = bookingService.resolveCurrentUser(session, userId);
+            assertCartStillBookable(session);
             paymentService.validatePaymentData(cardHolderName, cardNumber, expiryDate, cvv);
 
             List<BookingEntity> createdBookings = bookingService.createBookingsFromCart(session, user);
@@ -77,6 +86,7 @@ public class PaymentController {
                 redirectAttributes.addFlashAttribute("errorMessage", "Your cart is empty. Add tickets first.");
                 return "redirect:/events";
             }
+            assertCartStillBookable(session);
             model.addAttribute("cartItems", bookingService.getCartItems(session));
             model.addAttribute("cartTotal", bookingService.getCartTotal(session));
             return "cart";
@@ -89,6 +99,17 @@ public class PaymentController {
     @GetMapping("/confirmation")
     public String showConfirmationPage(HttpSession session, Model model) {
         return "confirmation";
+    }
+
+    private void assertCartStillBookable(HttpSession session) {
+        for (CartItemDto item : bookingService.getCartItems(session)) {
+            EventEntity event = bookingService.getEventById(item.getEventId());
+            if (!eventScheduleService.isOpenForBooking(event)) {
+                throw new IllegalArgumentException(
+                        "Your cart includes \"" + event.getEventName() + "\" which can no longer be booked. "
+                                + eventScheduleService.getBookingClosedMessage(event));
+            }
+        }
     }
 
 }

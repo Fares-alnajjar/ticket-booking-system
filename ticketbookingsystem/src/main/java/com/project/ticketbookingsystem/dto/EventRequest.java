@@ -66,4 +66,9 @@ public class EventRequest {
 
 
     private String imageUrl;
+
+    @NotNull(message = "Event duration is required")
+    @Min(value = 15, message = "Duration must be at least 15 minutes")
+    @Max(value = 10080, message = "Duration cannot exceed 7 days (10080 minutes)")
+    private Integer durationMinutes;
 }

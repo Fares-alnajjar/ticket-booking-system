@@ -2,6 +2,7 @@ package com.project.ticketbookingsystem.controller;
 
 import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.service.BookingService;
+import com.project.ticketbookingsystem.service.EventScheduleService;
 import com.project.ticketbookingsystem.service.EventService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ public class EventController {
 
     private final EventService eventService;
     private final BookingService bookingService;
+    private final EventScheduleService eventScheduleService;
 
-    public EventController(EventService eventService, BookingService bookingService) {
+    public EventController(EventService eventService, BookingService bookingService, EventScheduleService eventScheduleService) {
         this.eventService = eventService;
         this.bookingService = bookingService;
+        this.eventScheduleService = eventScheduleService;
     }
 
     @GetMapping
@@ -43,6 +46,8 @@ public class EventController {
         
         EventEntity event = eventService.getEventById(id);
         model.addAttribute("event", event);
+        model.addAttribute("bookingAllowed", eventScheduleService.isOpenForBooking(event));
+        model.addAttribute("bookingClosedMessage", eventScheduleService.getBookingClosedMessage(event));
         try {
             model.addAttribute("currentUserId", bookingService.resolveCurrentUser(session, userId).getId());
         } catch (IllegalArgumentException ignored) {

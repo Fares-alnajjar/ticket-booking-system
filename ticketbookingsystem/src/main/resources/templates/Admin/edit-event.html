@@ -60,6 +60,10 @@
             <label for="eventTime" class="form-label">Event Time</label>
             <input type="time" class="form-control mb-3" id="eventTime" th:field="*{eventTime}" required>
 
+            <label for="durationMinutes" class="form-label">Event duration (minutes)</label>
+            <input type="number" class="form-control mb-3" id="durationMinutes" th:field="*{durationMinutes}"
+                   placeholder="e.g. 120" step="15" min="15" max="10080" required>
+
             <label for="location" class="form-label">Location</label>
             <input type="text" class="form-control mb-3" id="location" placeholder="Enter location" th:field="*{location}" required>
 
