@@ -28,8 +28,11 @@ public class SignUpService {
 
     public UserEntity register(SignUpDto request){
         //  Name
-        if (request.getName() == null || request.getName().isBlank())
+        String name = request.getName();
+        if (name == null || name.isBlank())
             throw new IllegalArgumentException("Name is required");
+        if (!name.trim().matches("^[a-zA-Z\\s'-]+$"))
+            throw new IllegalArgumentException("Name must contain only letters");
 
         //  Email
         if (request.getEmail() == null || request.getEmail().isBlank())
