@@ -43,11 +43,12 @@ public class SignUpService {
         if (request.getPassword().length() < 6)
             throw new IllegalArgumentException("Password must be at least 6 characters");
 
-        //  National ID
-        if (request.getNationalId() == null)
+        // National ID
+        if (request.getNationalId() == null || request.getNationalId().isBlank())
             throw new IllegalArgumentException("National ID is required");
-        if (request.getNationalId().toString().length() != 14)
+        if (!request.getNationalId().matches("^\\d{14}$"))
             throw new IllegalArgumentException("National ID must be exactly 14 digits");
+
 
         //  Phone Number
         if (request.getPhoneNumber() == null || request.getPhoneNumber().isBlank())

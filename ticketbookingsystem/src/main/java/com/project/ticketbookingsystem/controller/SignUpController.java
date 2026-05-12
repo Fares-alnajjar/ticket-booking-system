@@ -26,7 +26,7 @@ public class SignUpController {
     public String handleSignUp(
             @RequestParam("name") String name,
             @RequestParam("phone") String phone,
-            @RequestParam("nationalId") Long nationalId,
+            @RequestParam("nationalId") String nationalId,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("conPass") String conpass,

@@ -28,7 +28,7 @@ public class SignUpDto {
 
     @NotBlank(message = "National ID is required")
     @Pattern(
-            regexp = "\\d{14}",
+            regexp = "^\\d{14}$",
             message = "National ID must be exactly 14 digits"
     )
     private String nationalId;
