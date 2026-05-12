@@ -213,7 +213,7 @@ public class AdminController {
         }
         return "redirect:/admin/manage-users";
     }
-    @GetMapping("/edit-user/{id}")
+    /*@GetMapping("/edit-user/{id}")
     public String getEditUserPage(@PathVariable Long id, Model model,
                                    RedirectAttributes redirectAttributes) {
         try {
@@ -235,9 +235,32 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "User not found.");
             return "redirect:/admin/manage-users";
         }
+    }*/
+    @GetMapping("/edit-user/{id}")
+    public String getEditUserPage(@PathVariable Long id, Model model,
+                                  RedirectAttributes redirectAttributes) {
+        try {
+            UserEntity user = signUpService.getUserById(id);
+
+            UpdateProfileDto request = UpdateProfileDto.builder() // correct DTO
+                    .id(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .nationalId(user.getNationalId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .createdAt(user.getCreatedAt())
+                    .build();
+
+            model.addAttribute("user", request);
+            return "Admin/edit-user";
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "User not found.");
+            return "redirect:/admin/manage-users";
+        }
     }
 
-    @PostMapping("/update-user")
+   /* @PostMapping("/update-user")
     public String updateUser(
             @ModelAttribute @Valid UpdateProfileDto request,
             BindingResult result,
@@ -263,6 +286,31 @@ public class AdminController {
         }
 
 
-    }
+    }*/
+   @PostMapping("/update-user")
+   public String updateUser(
+           @ModelAttribute @Valid UpdateProfileDto request,
+           BindingResult result,
+           Model model,
+           RedirectAttributes redirectAttributes) {
+
+       if (result.hasErrors()) {
+           String errorMsg = result.getFieldErrors().get(0).getDefaultMessage();
+           model.addAttribute("error", errorMsg);
+           model.addAttribute("user", request); //  was "event", should be "user"
+           return "Admin/edit-user";
+       }
+       try {
+           signUpService.updateUser(request);
+           redirectAttributes.addFlashAttribute("success",
+                   "User \"" + request.getName() + "\" updated successfully!"); //  was "Event"
+           return "redirect:/admin/manage-users";
+
+       } catch (IllegalArgumentException e) {
+           model.addAttribute("error", e.getMessage()); //  show actual error message
+           model.addAttribute("user", request);
+           return "Admin/edit-user"; //  return view directly not redirect (keeps errors)
+       }
+   }
 
 }
