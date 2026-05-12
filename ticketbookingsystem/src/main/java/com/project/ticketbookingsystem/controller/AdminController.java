@@ -1,5 +1,6 @@
 package com.project.ticketbookingsystem.controller;
 
+import com.project.ticketbookingsystem.dto.AdminDashboardRevenue;
 import com.project.ticketbookingsystem.dto.EventRequest;
 import com.project.ticketbookingsystem.dto.SignUpDto;
 import com.project.ticketbookingsystem.dto.UpdateProfileDto;
@@ -64,15 +65,12 @@ public class AdminController {
 
         model.addAttribute("totalTickets",bookingService.getTotalTicketCount());
 
-        model.addAttribute("totalRevenue",paymentService.getTotalRevenue());
-
-        model.addAttribute("footballRevenue",paymentService.getFootballRevenue());
-
-        model.addAttribute("basketballRevenue",paymentService.getBasketballRevenue());
-
-        model.addAttribute("handballRevenue",paymentService.getHandballRevenue());
-
-        model.addAttribute("othersRevenue",paymentService.getOthersRevenue());
+        AdminDashboardRevenue revenue = paymentService.getAdminDashboardRevenue();
+        model.addAttribute("totalRevenue", revenue.totalRevenue());
+        model.addAttribute("footballRevenue", revenue.footballRevenue());
+        model.addAttribute("basketballRevenue", revenue.basketballRevenue());
+        model.addAttribute("handballRevenue", revenue.handballRevenue());
+        model.addAttribute("othersRevenue", revenue.othersRevenue());
         return "Admin/Admin";
     }
 

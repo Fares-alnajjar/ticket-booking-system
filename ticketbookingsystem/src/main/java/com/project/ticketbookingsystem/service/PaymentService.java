@@ -1,5 +1,6 @@
 package com.project.ticketbookingsystem.service;
 
+import com.project.ticketbookingsystem.dto.AdminDashboardRevenue;
 import com.project.ticketbookingsystem.model.BookingEntity;
 import com.project.ticketbookingsystem.model.EventEntity;
 import com.project.ticketbookingsystem.model.PaymentEntity;
@@ -11,7 +12,9 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentService {
@@ -99,45 +102,33 @@ public class PaymentService {
         }
     }
 
+    /**
+     * All dashboard revenue figures in two DB round-trips (no full-table loads, no N+1 through the graph).
+     */
+    public AdminDashboardRevenue getAdminDashboardRevenue() {
+        Double total = paymentRepository.sumAllPaymentAmounts();
+        double totalRev = total != null ? total : 0.0;
+
+        Map<EventEntity.Category, Double> byCategory = new EnumMap<>(EventEntity.Category.class);
+        for (EventEntity.Category c : EventEntity.Category.values()) {
+            byCategory.put(c, 0.0);
+        }
+        for (Object[] row : paymentRepository.sumAmountGroupedByEventCategory()) {
+            EventEntity.Category category = (EventEntity.Category) row[0];
+            Number amount = (Number) row[1];
+            byCategory.put(category, amount != null ? amount.doubleValue() : 0.0);
+        }
+
+        return new AdminDashboardRevenue(
+                totalRev,
+                byCategory.getOrDefault(EventEntity.Category.FOOTBALL, 0.0),
+                byCategory.getOrDefault(EventEntity.Category.BASKETBALL, 0.0),
+                byCategory.getOrDefault(EventEntity.Category.HANDBALL, 0.0),
+                byCategory.getOrDefault(EventEntity.Category.OTHERS, 0.0));
+    }
+
     public double getTotalRevenue() {
-        List<PaymentEntity> tickets = paymentRepository.findAll();
-        double totalRev = 0;
-        for (PaymentEntity ticket : tickets) {
-            totalRev =totalRev + ticket.getAmount();
-        }
-        return totalRev;
-    }
-
-
-
-    private double calculateRevenueForCategory(List<PaymentEntity> payments, EventEntity.Category targetCategory) {
-        double revenue = 0.0;
-        for (PaymentEntity payment : payments) {
-            EventEntity.Category category = payment.getBooking().getTicket().getEvent().getCategory();
-            if (category == targetCategory) {
-                revenue += payment.getAmount();
-            }
-        }
-        return revenue;
-    }
-
-    public double getFootballRevenue() {
-        List<PaymentEntity> payments = paymentRepository.findAll();
-        return calculateRevenueForCategory(payments, EventEntity.Category.FOOTBALL);
-    }
-
-    public double getBasketballRevenue() {
-        List<PaymentEntity> payments = paymentRepository.findAll();
-        return calculateRevenueForCategory(payments, EventEntity.Category.BASKETBALL);
-    }
-
-    public double getHandballRevenue() {
-        List<PaymentEntity> payments = paymentRepository.findAll();
-        return calculateRevenueForCategory(payments, EventEntity.Category.HANDBALL);
-    }
-
-    public double getOthersRevenue() {
-        List<PaymentEntity> payments = paymentRepository.findAll();
-        return calculateRevenueForCategory(payments, EventEntity.Category.OTHERS);
+        Double v = paymentRepository.sumAllPaymentAmounts();
+        return v != null ? v : 0.0;
     }
 }
