@@ -43,31 +43,74 @@
         </div>
 
         <form class="login_form" th:action="@{/admin/update-user}" method="post" th:object="${user}">
-          <div class="mb-3  mt-3 rounded p-2">
+          <div class="mb-3 mt-3 rounded p-2">
             <h2 class="text-center mt-3">Edit User</h2>
 
-            <input type="hidden" th:field="*{id}" name="id">
+            <input type="hidden" th:field="*{id}"/>
 
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Enter name" th:value="${user.name}" required>
+            <input type="text" class="form-control mb-1" id="name" th:field="*{name}" placeholder="Enter name"/>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger small mb-2"></div>
 
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control mb-3" id="email" name="email" placeholder="Enter email" th:value="${user.email}" required>
+            <input type="email" class="form-control mb-1" id="email" th:field="*{email}" placeholder="Enter email"/>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger small mb-2"></div>
 
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control mb-3" id="password" name="password" placeholder="Enter password" th:value="${user.password}" >
+            <label for="password" class="form-label">Password <small class="text-muted">(leave blank to keep current)</small></label>
+            <input type="password" class="form-control mb-1" id="password" th:field="*{password}" placeholder="Enter new password"/>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger small mb-2"></div>
 
             <label for="nationalId" class="form-label">National ID</label>
-            <input type="number" class="form-control mb-3" id="nationalId" name="nationalId" placeholder="Enter national ID" th:value="${user.nationalId}" required>
+            <input type="text" class="form-control mb-1" id="nationalId" th:field="*{nationalId}" placeholder="Enter national ID"/>
+            <div th:if="${#fields.hasErrors('nationalId')}" th:errors="*{nationalId}" class="text-danger small mb-2"></div>
 
             <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="number" class="form-control mb-3" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" th:value="${user.phoneNumber}" required>
+            <input type="text" class="form-control mb-1" id="phoneNumber" th:field="*{phoneNumber}" placeholder="Enter phone number"/>
+            <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger small mb-2"></div>
 
-            <button type="submit" class="btn btn-primary w-100">Update User</button>
+            <button type="submit" class="btn btn-primary w-100 mt-3">Update User</button>
           </div>
         </form>
       </div>
     </main>
+
+<!--    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">-->
+<!--      <div class="container">-->
+<!--        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">-->
+<!--          <span th:text="${error}"></span>-->
+<!--          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">-->
+<!--          <span th:text="${success}"></span>-->
+<!--          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--        </div>-->
+
+<!--        <form class="login_form" th:action="@{/admin/update-user}" method="post" th:object="${user}">-->
+<!--          <div class="mb-3  mt-3 rounded p-2">-->
+<!--            <h2 class="text-center mt-3">Edit User</h2>-->
+
+<!--            <input type="hidden" th:field="*{id}" name="id">-->
+
+<!--            <label for="name" class="form-label">Name</label>-->
+<!--            <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Enter name" th:value="${user.name}" required>-->
+
+<!--            <label for="email" class="form-label">Email</label>-->
+<!--            <input type="email" class="form-control mb-3" id="email" name="email" placeholder="Enter email" th:value="${user.email}" required>-->
+
+<!--            <label for="password" class="form-label">Password</label>-->
+<!--            <input type="password" class="form-control mb-3" id="password" name="password" placeholder="Enter password" th:value="${user.password}" >-->
+
+<!--            <label for="nationalId" class="form-label">National ID</label>-->
+<!--            <input type="number" class="form-control mb-3" id="nationalId" name="nationalId" placeholder="Enter national ID" th:value="${user.nationalId}" required>-->
+
+<!--            <label for="phoneNumber" class="form-label">Phone Number</label>-->
+<!--            <input type="number" class="form-control mb-3" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" th:value="${user.phoneNumber}" required>-->
+
+<!--            <button type="submit" class="btn btn-primary w-100">Update User</button>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </main>-->
   </div>
 </div>
 

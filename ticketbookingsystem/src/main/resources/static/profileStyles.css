@@ -1,19 +1,23 @@
 body {
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-card {
+  min-width: 900px !important;
 }
 
 .container.profile-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
-  min-height: calc(100vh - 4rem);
+  align-items: center;
+  min-height: 100vh;
   width: 100%;
   max-width: 1140px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 .profile-container {
@@ -21,7 +25,11 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-width: 0;
+  max-width: 700px;
+}
+
+.row {
+  width: 100%;
 }
 
 .profile-page .card-header.bg-primary,
